@@ -118,12 +118,16 @@ int main(int argc, char **argv){
 
         //Una vez encontrada vemos en que posición del conjunto solución insertarla
         //para minimizar el trayecto
+
         if(ciudad_origen == 0){
         }
 
         candidatos[ciudad_mas_cercana] = -1;
         tam_solucion++;
+    }
 
+    for(int i=0; i<tam_solucion; ++i){
+        cout << solucion[i]+1 << endl;
     }
     
 
