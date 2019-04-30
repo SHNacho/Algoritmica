@@ -101,25 +101,27 @@ int main(int argc, char **argv){
     while(tam_solucion < num_ciudades){
         
         //Buscamos la ciudad más cercana al conjunto solución
-        int ciudad_origen = 0;
+        //int ciudad_origen = 0;
         int ciudad_mas_cercana = 0;
         double distancia_mas_cercana = INF;
 
-        for(int i=0; i<tam_solucion; ++i){
-            int ciudad = solucion[i];
-            for (int j=0; j<num_ciudades; ++j){
-                if (distancias[ciudad][j] < distancia_mas_cercana && candidatos[j] != -1){
-                    ciudad_origen = ciudad;
-                    ciudad_mas_cercana = j;
-                    distancia_mas_cercana = distancias[ciudad][j];
+        vector<int>::iterator sol_it, cand_it, ciudad_origen_it;
+
+        for(sol_it=solucion.begin(); sol_it!=solucion.end(); ++sol_it){
+            for (cand_it=candidatos.begin(); cand_it!=candidatos.end(); ++cand_it){
+                if (distancias[*sol_it][*cand_it] < distancia_mas_cercana && candidatos[*cand_it] != -1){
+                    ciudad_origen_it = sol_it;
+                    ciudad_mas_cercana = *cand_it;
+                    distancia_mas_cercana = distancias[*sol_it][*cand_it];
                 }
             }
         }
 
+        //TODO
         //Una vez encontrada vemos en que posición del conjunto solución insertarla
         //para minimizar el trayecto
 
-        if(ciudad_origen == 0){
+        if(ciudad_origen_it == solucion.begin()){
         }
 
         candidatos[ciudad_mas_cercana] = -1;
