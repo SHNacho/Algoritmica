@@ -95,9 +95,12 @@ int main(int argc, char **argv){
     solucion.push_back(O); candidatos[O] = -1;
     solucion.push_back(N); candidatos[N] = -1;
     solucion.push_back(E); candidatos[E] = -1;
-    
+
     //Comienza el algoritmo
-    int tam_solucion = 3;    
+    int tam_solucion = 3;  
+    for(int i=0; i<tam_solucion; ++i){
+        cout << solucion[i] << endl;
+    }  
     while(tam_solucion < num_ciudades){
         
         //Buscamos la ciudad más cercana al conjunto solución
@@ -116,8 +119,13 @@ int main(int argc, char **argv){
             }
         }
 
+        
+
         //Una vez encontrada vemos en que posición del conjunto solución insertarla
         //para minimizar el trayecto
+
+        //Prueba
+        solucion.push_back(ciudad_mas_cercana);
 
         if(ciudad_origen == 0){
         }
