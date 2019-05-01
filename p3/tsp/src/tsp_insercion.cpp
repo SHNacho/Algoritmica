@@ -121,6 +121,8 @@ int main(int argc, char **argv){
         //Una vez encontrada vemos en que posición del conjunto solución insertarla
         //para minimizar el trayecto
 
+         solucion.push_back(ciudad_mas_cercana);
+
         if(ciudad_origen_it == solucion.begin()){
         }
 
