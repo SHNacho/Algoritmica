@@ -1,4 +1,8 @@
 *memoria*
 *.zip
 .vscode
+<<<<<<< HEAD
 nbproject
+=======
+nbproject
+>>>>>>> iteradores

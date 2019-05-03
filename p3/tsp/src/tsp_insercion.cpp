@@ -40,7 +40,7 @@ int main(int argc, char **argv){
     num_ciudades = atoi(line.c_str());
     
     //Reservamos espacio para el grafo
-    matriz <double> distancias(num_ciudades, num_ciudades, INF);
+    matriz <double> distancias(num_ciudades, num_ciudades, 0);
 
     //Movemos el offset al comienzo de los datos
     for(int i=0; i<3; ++i){
@@ -61,11 +61,13 @@ int main(int argc, char **argv){
     //el grafo
     for(int i=0; i<num_ciudades; ++i){
         for (int j=i+1; j<num_ciudades; ++j){
-            distancias[i][j]=sqrt(pow(v_coordenadas[j].first + v_coordenadas[i].first, 2) +
-                        pow(v_coordenadas[j].second + v_coordenadas[i].second, 2));
+            distancias[i][j]=sqrt(pow(v_coordenadas[j].first - v_coordenadas[i].first, 2) +
+                        pow(v_coordenadas[j].second - v_coordenadas[i].second, 2));
             distancias[j][i]=distancias[i][j];
         }
     }
+
+    distancias.draw();
 
     //Generamos vector de candidatos
     for(int i=0; i<num_ciudades; ++i)
@@ -82,11 +84,11 @@ int main(int argc, char **argv){
             mas_al_N = v_coordenadas[i].first;
             N = i;
         }
-        else if(v_coordenadas[i].second > mas_al_E){
+        if(v_coordenadas[i].second > mas_al_E){
             mas_al_E = v_coordenadas[i].second;
             E = i;
         }
-        else if(v_coordenadas[i].second < mas_al_O){
+        if(v_coordenadas[i].second < mas_al_O){
             mas_al_O = v_coordenadas[i].second;
             O = i;
         }
@@ -95,30 +97,43 @@ int main(int argc, char **argv){
     solucion.push_back(O); candidatos[O] = -1;
     solucion.push_back(N); candidatos[N] = -1;
     solucion.push_back(E); candidatos[E] = -1;
+<<<<<<< HEAD
 
     //Comienza el algoritmo
     int tam_solucion = 3;  
     for(int i=0; i<tam_solucion; ++i){
         cout << solucion[i] << endl;
     }  
+=======
+    
+    cout << "Recorrido inicial: " << endl;
+    for(int i=0; i<3; ++i){
+        cout << solucion[i]+1 << " ";
+    }
+    cout << endl << "insertados:" << endl;
+    //Comienza el algoritmo
+
+    vector<int>::iterator sol_it, cand_it, ciudad_origen_it;
+
+    int tam_solucion = 3;    
+>>>>>>> iteradores
     while(tam_solucion < num_ciudades){
-        
         //Buscamos la ciudad más cercana al conjunto solución
-        int ciudad_origen = 0;
+        //int ciudad_origen = 0;
         int ciudad_mas_cercana = 0;
         double distancia_mas_cercana = INF;
 
-        for(int i=0; i<tam_solucion; ++i){
-            int ciudad = solucion[i];
-            for (int j=0; j<num_ciudades; ++j){
-                if (distancias[ciudad][j] < distancia_mas_cercana && candidatos[j] != -1){
-                    ciudad_origen = ciudad;
-                    ciudad_mas_cercana = j;
-                    distancia_mas_cercana = distancias[ciudad][j];
+        for(sol_it=solucion.begin(); sol_it!=solucion.end(); ++sol_it){
+            for (cand_it=candidatos.begin(); cand_it!=candidatos.end(); ++cand_it){
+                if ((distancias[*sol_it][*cand_it] < distancia_mas_cercana) && (*cand_it != -1)){
+                    ciudad_origen_it = sol_it;
+                    ciudad_mas_cercana = *cand_it;
+                    distancia_mas_cercana = distancias[*sol_it][*cand_it];
                 }
             }
         }
 
+<<<<<<< HEAD
         
 
         //Una vez encontrada vemos en que posición del conjunto solución insertarla
@@ -128,16 +143,61 @@ int main(int argc, char **argv){
         solucion.push_back(ciudad_mas_cercana);
 
         if(ciudad_origen == 0){
+=======
+        //TODO
+        //Una vez encontrada vemos en que posición del conjunto solución insertarla
+        //para minimizar el trayecto
+
+        vector<int>::iterator ciudad_siguiente_it = ciudad_origen_it;
+        vector<int>::iterator ciudad_anterior_it = ciudad_origen_it;
+        vector<int>::iterator final_it = solucion.end();
+        final_it--;
+
+        if(ciudad_origen_it == solucion.begin()){
+            ++ciudad_siguiente_it;
+            ciudad_anterior_it = final_it;
         }
+        else if(ciudad_origen_it == final_it){
+            ciudad_siguiente_it = solucion.begin();
+            --ciudad_anterior_it;
+        }
+        else{
+            ++ciudad_siguiente_it;
+            --ciudad_anterior_it;
+        }
+
+        if(distancias[ciudad_mas_cercana][*ciudad_anterior_it] < distancias[ciudad_mas_cercana][*ciudad_siguiente_it]){
+            solucion.insert(ciudad_origen_it, ciudad_mas_cercana);
+        }
+        else{
+            solucion.insert(ciudad_siguiente_it, ciudad_mas_cercana);
+>>>>>>> iteradores
+        }
+
+        cout << ciudad_mas_cercana+1 << endl;
 
         candidatos[ciudad_mas_cercana] = -1;
         tam_solucion++;
+        for(int i=0; i<tam_solucion; ++i){
+            cout << solucion[i]+1 << " ";
+        }
+        cout << endl;
     }
 
+    cout << "Solucion: " << endl;
+
     for(int i=0; i<tam_solucion; ++i){
-        cout << solucion[i]+1 << endl;
+        cout << solucion[i]+1 << " ";
     }
+    cout << endl;
     
+    ofstream output_file("data/camino.txt");
+    for(int i=0; i<num_ciudades; ++i){
+        int c = solucion[i];
+        output_file << c+1 << " " << v_coordenadas[c].first << " " << v_coordenadas[c].second << endl;
+    }
+
+
 
     
 
