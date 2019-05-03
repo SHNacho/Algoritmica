@@ -96,11 +96,16 @@ int main(int argc, char **argv){
     solucion.push_back(N); candidatos[N] = -1;
     solucion.push_back(E); candidatos[E] = -1;
 
+    int tam_solucion = solucion.size(); //Tamaño del conjunto solucion
+
     //Comienzo del algoritmo
-    vector<int>::iterator sol_it, cand_it, ciudad_origen_it;
-    int tam_solucion = 3;    
-    while(tam_solucion < num_ciudades){
-        //Buscamos la ciudad más cercana al conjunto solución
+    vector<int>::iterator sol_it, cand_it;  //Iteradores de los vectores de candidatos y solución
+    vector<int>::iterator ciudad_origen_it; //Iterador que almacenará la posición de la ciudad del
+                                            //conjunto solución, que tiene más cerca a una ciudad
+                                            //del conjuno candidatos    
+
+    while(tam_solucion < num_ciudades){ //Mientras que no hayamos recorrido todas las ciudades
+                                        //Buscamos la ciudad más cercana al conjunto solución
         int ciudad_mas_cercana = 0;
         double distancia_mas_cercana = INF;
 
@@ -113,13 +118,15 @@ int main(int argc, char **argv){
                 }
             }
         }
-        //Una vez encontrada vemos en que posición del conjunto solución insertarla para minimizar el trayecto
 
+        //Una vez encontrada vemos en que posición del conjunto solución insertarla para minimizar el trayecto
         vector<int>::iterator ciudad_siguiente_it = ciudad_origen_it;
         vector<int>::iterator ciudad_anterior_it = ciudad_origen_it;
         vector<int>::iterator final_it = solucion.end();
         final_it--;
 
+        //Puesto que el recorrido es un ciclo (cerrado) hay que contemplar el caso de que la
+        //ciudad a insertar sea adyacente al primer o último elemento del conjunto solución
         if(ciudad_origen_it == solucion.begin()){
             ++ciudad_siguiente_it;
             ciudad_anterior_it = final_it;
@@ -132,6 +139,7 @@ int main(int argc, char **argv){
             ++ciudad_siguiente_it;
             --ciudad_anterior_it;
         }
+
 
         if(distancias[ciudad_mas_cercana][*ciudad_anterior_it] < distancias[ciudad_mas_cercana][*ciudad_siguiente_it]){
             solucion.insert(ciudad_origen_it, ciudad_mas_cercana);
