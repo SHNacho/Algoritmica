@@ -64,6 +64,8 @@ public:
      * @param _cols Nuevo número de columnas
      */
     void resize(int _filas, int _cols);
+
+    void assign(int f, int c, T& val);
     
     /**
      * @brief Pinta la matriz
@@ -112,6 +114,15 @@ public:
      * @return 
      */
     T& operator ()(const int _fila, const int _col);
+    
+    /**
+     * @brief Sobrecarga del operador []
+     * @param fila Fila de la matriz
+     * @return Fila de la matriz nº fila
+     */
+    vector<T>& operator [](const int fila);
+    
+    void get_Fila(const int fila, vector<T>& v);
 };
 
 #include"../src/matriz.cpp"

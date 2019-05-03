@@ -17,10 +17,15 @@
 #define MATRIZ_CPP
 
 #include <vector>
+#include <iostream>
 #include <iomanip>
 #include <algorithm>
 #include <cassert>
 #include "matriz.h"
+
+using namespace std;
+
+
 
 ////////////////////////////////////////////////////////////////////////////
 template <class T>
@@ -35,19 +40,18 @@ matriz<T>::matriz(const int _filas, const int _cols){
     reserve(_filas, _cols);
     filas = 0;
     cols = 0;
-    f_capacity = _filas;
-    c_capacity = _cols;
 }
 ////////////////////////////////////////////////////////////////////////////
 template <class T>
 matriz<T>::matriz(const int _filas, const int _cols, const T& _ini){
     
     reserve(_filas, _cols);
-    f_capacity = filas = _filas;
-    c_capacity = cols = _cols;
+    filas = _filas;
+    cols = _cols;
     
     for(int i=0; i<filas; ++i){
-        fill(m[i].begin(),m[i].end(), _ini);
+        for(int j=0; j<filas; ++j)
+            m[i][j]=_ini;
     }
     
 }
@@ -69,6 +73,9 @@ void matriz<T>::reserve(const int _filas, const int _cols){
     m.reserve(_filas);
     for (int i=0; i<_filas; ++i)
         m[i].reserve(_cols);
+    
+    f_capacity = _filas;
+    c_capacity = _cols;
 }
 ////////////////////////////////////////////////////////////////////////////
 template <class T>
@@ -77,13 +84,22 @@ void matriz<T>::resize(int _filas, int _cols){
     for(int i=0; i<_filas; ++i){
         m[i].resize(_cols);
     }
+
+    f_capacity = _filas;
+    c_capacity = _cols;
+}
+////////////////////////////////////////////////////////////////////////////
+template<class T>
+void matriz<T>::assign(int f, int c, T& val){
+    assert(f>0 && f<filas && c>0 && c<filas);
+    m[f][c] = val;
 }
 ////////////////////////////////////////////////////////////////////////////
 template <class T>
 void matriz<T>::draw() const{
     for(int i=0; i<filas; ++i){
         for(int j=0; j<cols; ++j)
-            cout<< setw(5) << m[i][j];
+            cout<< setw(7) << setprecision(4) << m[i][j];
         cout << endl << endl;
     }
 }
@@ -192,5 +208,18 @@ template <class T>
 T& matriz<T>::operator ()(const int _fila, const int _col){
     return m[_fila][_col];
 }
+////////////////////////////////////////////////////////////////////////////
+template <class T>
+vector<T>& matriz<T>::operator [](const int fila){
+    return m[fila];
+}
+////////////////////////////////////////////////////////////////////////////
+template <class T>
+void matriz<T>::get_Fila(const int fila, vector<T>& v){
+    for(int i=0; i<cols; ++i){
+        v.push_back(m[fila][i]);
+    }
+}
+
 
 #endif /*MATRIZ_CPP*/
