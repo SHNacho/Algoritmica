@@ -67,29 +67,27 @@ int main(int argc, char **argv){
         }
     }
 
-    distancias.draw();
-
     //Generamos vector de candidatos
     for(int i=0; i<num_ciudades; ++i)
         candidatos.push_back(i);
     
     //Elegimos el recorrido inicial
     int E = 0, O = 0, N = 0;
-    double mas_al_E = v_coordenadas[0].second;
-    double mas_al_O = v_coordenadas[0].second; 
-    double mas_al_N = v_coordenadas[0].first;
+    double mas_al_E = v_coordenadas[0].first;
+    double mas_al_O = v_coordenadas[0].first; 
+    double mas_al_N = v_coordenadas[0].second;
     
     for(int i=1; i<num_ciudades; ++i){
-        if(v_coordenadas[i].first > mas_al_N){
-            mas_al_N = v_coordenadas[i].first;
+        if(v_coordenadas[i].second > mas_al_N){
+            mas_al_N = v_coordenadas[i].second;
             N = i;
         }
-        if(v_coordenadas[i].second > mas_al_E){
-            mas_al_E = v_coordenadas[i].second;
+        if(v_coordenadas[i].first > mas_al_E){
+            mas_al_E = v_coordenadas[i].first;
             E = i;
         }
-        if(v_coordenadas[i].second < mas_al_O){
-            mas_al_O = v_coordenadas[i].second;
+        if(v_coordenadas[i].first < mas_al_O){
+            mas_al_O = v_coordenadas[i].first;
             O = i;
         }
     }
@@ -97,13 +95,6 @@ int main(int argc, char **argv){
     solucion.push_back(O); candidatos[O] = -1;
     solucion.push_back(N); candidatos[N] = -1;
     solucion.push_back(E); candidatos[E] = -1;
-    
-    cout << "Recorrido inicial: " << endl;
-    for(int i=0; i<3; ++i){
-        cout << solucion[i]+1 << " ";
-    }
-    cout << endl << "insertados:" << endl;
-    //Comienza el algoritmo
 
     vector<int>::iterator sol_it, cand_it, ciudad_origen_it;
 
@@ -123,8 +114,6 @@ int main(int argc, char **argv){
                 }
             }
         }
-
-        //TODO
         //Una vez encontrada vemos en que posición del conjunto solución insertarla
         //para minimizar el trayecto
 
@@ -153,14 +142,8 @@ int main(int argc, char **argv){
             solucion.insert(ciudad_siguiente_it, ciudad_mas_cercana);
         }
 
-        cout << ciudad_mas_cercana+1 << endl;
-
         candidatos[ciudad_mas_cercana] = -1;
         tam_solucion++;
-        for(int i=0; i<tam_solucion; ++i){
-            cout << solucion[i]+1 << " ";
-        }
-        cout << endl;
     }
 
     cout << "Solucion: " << endl;
@@ -170,7 +153,7 @@ int main(int argc, char **argv){
     }
     cout << endl;
     
-    ofstream output_file("data/camino.txt");
+    ofstream output_file("data/ulysses16_insercion.txt");
     for(int i=0; i<num_ciudades; ++i){
         int c = solucion[i];
         output_file << c+1 << " " << v_coordenadas[c].first << " " << v_coordenadas[c].second << endl;
