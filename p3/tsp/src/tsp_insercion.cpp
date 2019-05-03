@@ -96,12 +96,11 @@ int main(int argc, char **argv){
     solucion.push_back(N); candidatos[N] = -1;
     solucion.push_back(E); candidatos[E] = -1;
 
+    //Comienzo del algoritmo
     vector<int>::iterator sol_it, cand_it, ciudad_origen_it;
-
     int tam_solucion = 3;    
     while(tam_solucion < num_ciudades){
         //Buscamos la ciudad más cercana al conjunto solución
-        //int ciudad_origen = 0;
         int ciudad_mas_cercana = 0;
         double distancia_mas_cercana = INF;
 
@@ -114,8 +113,7 @@ int main(int argc, char **argv){
                 }
             }
         }
-        //Una vez encontrada vemos en que posición del conjunto solución insertarla
-        //para minimizar el trayecto
+        //Una vez encontrada vemos en que posición del conjunto solución insertarla para minimizar el trayecto
 
         vector<int>::iterator ciudad_siguiente_it = ciudad_origen_it;
         vector<int>::iterator ciudad_anterior_it = ciudad_origen_it;
@@ -146,6 +144,7 @@ int main(int argc, char **argv){
         tam_solucion++;
     }
 
+    //Mostramos la solución
     cout << "Solucion: " << endl;
 
     for(int i=0; i<tam_solucion; ++i){
@@ -153,6 +152,7 @@ int main(int argc, char **argv){
     }
     cout << endl;
     
+    //Salida de la solución a fichero
     ofstream output_file("data/ulysses16_insercion.txt");
     for(int i=0; i<num_ciudades; ++i){
         int c = solucion[i];
