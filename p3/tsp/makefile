@@ -4,9 +4,9 @@ OBJ=./obj
 INC=./include
 CXX = -std=gnu++0x -g -I$(INC)
 
+all: clean build
+
 build: $(BIN)/tsp_insercion $(BIN)/tsp_cercania
-
-
 	
 $(BIN)/tsp_insercion: $(OBJ)/tsp_insercion.o $(OBJ)/matriz.o
 	g++ $(CXX) -no-pie -o $@ $^
