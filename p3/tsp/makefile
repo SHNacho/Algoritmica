@@ -25,7 +25,7 @@ $(OBJ)/matriz.o: $(SRC)/matriz.cpp
 
 
 clean:
-	rm -rf $(BIN)/* $(OBJ)/* traspuesta.zip
+	rm -rf $(BIN)/* $(OBJ)/* tsp.zip
 	
 zip: clean
 	zip -r tsp.zip bin include makefile obj src data
