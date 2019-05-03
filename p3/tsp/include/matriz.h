@@ -121,6 +121,8 @@ public:
      * @return Fila de la matriz nº fila
      */
     vector<T>& operator [](const int fila);
+    
+    void get_Fila(const int fila, vector<T>& v);
 };
 
 #include"../src/matriz.cpp"

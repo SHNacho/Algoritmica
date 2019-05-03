@@ -213,6 +213,13 @@ template <class T>
 vector<T>& matriz<T>::operator [](const int fila){
     return m[fila];
 }
+////////////////////////////////////////////////////////////////////////////
+template <class T>
+void matriz<T>::get_Fila(const int fila, vector<T>& v){
+    for(int i=0; i<cols; ++i){
+        v.push_back(m[fila][i]);
+    }
+}
 
 
 #endif /*MATRIZ_CPP*/
