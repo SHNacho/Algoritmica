@@ -176,9 +176,5 @@ int main(int argc, char **argv){
         output_file << c+1 << " " << v_coordenadas[c].first << " " << v_coordenadas[c].second << endl;
     }
 
-
-
-    cout << "Loco" << endl;
-
     return (0);
 }
