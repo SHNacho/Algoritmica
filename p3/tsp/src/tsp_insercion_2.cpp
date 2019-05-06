@@ -135,6 +135,8 @@ int main(int argc, char **argv){
         
     }    
 
+    //Insertamos de nuevo el primer elemento del conjunto solución
+    // ya que es un caamino cerrado
     solucion.push_back(*solucion.begin());
 
     //Mostramos la solución
