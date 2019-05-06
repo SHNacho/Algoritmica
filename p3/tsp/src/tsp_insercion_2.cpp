@@ -9,6 +9,13 @@
 
 using namespace std;
 
+/**
+ * Este programa busca un ciclo que recorra todas las ciudades de 
+ * un mapa mediante un algoritmo de tipo greedy. En esta versión
+ * del algoritmo, dado un recorrido inicial que contiene tres nodos,
+ * en cada paso se busca el nodo que menos aumenta el tamaño del recorrido
+ * y es insertado en la posición en la que cumple esta condición.
+ */
 int main(int argc, char **argv){
     const double INF = numeric_limits<double>::max();
 
