@@ -135,7 +135,7 @@ int main(int argc, char **argv){
         
     }    
 
-    
+    solucion.push_back(*solucion.begin());
 
     //Mostramos la solución
     cout << "Solucion: " << endl;
@@ -144,6 +144,14 @@ int main(int argc, char **argv){
         cout << solucion[i]+1 << " ";
     }
     cout << endl;
+
+    //Cálculo de la distancia total recorrida
+    double distancia_recorrida = 0.00;
+    for(int i=0; i<tam_solucion-1; ++i){
+        distancia_recorrida += distancias[i][i+1];
+    }
+
+    cout << "Distancia total recorrida: " << distancia_recorrida << endl;
     
     //Salida de la solución a fichero
     ofstream output_file("data/ulysses16_insercion.txt");
