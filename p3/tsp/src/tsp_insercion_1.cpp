@@ -9,6 +9,15 @@
 
 using namespace std;
 
+
+/**
+ * Este programa busca un ciclo que recorra todas las ciudades de 
+ * un mapa mediante un algoritmo de tipo greedy. En esta versión
+ * del algoritmo, dado un recorrido inicial que contiene tres nodos
+ * en cada paso se busca el nodo más cercano al conjunto solución que
+ * se encuentre en el conjunto de candidatos. El nodo más cercano es
+ * insertado en la posición del vector que menos aumente el recorrido.
+ */
 int main(int argc, char **argv){
     const double INF = numeric_limits<double>::max();
 
@@ -66,6 +75,8 @@ int main(int argc, char **argv){
             distancias[j][i]=distancias[i][j];
         }
     }
+
+    distancias.draw();
 
     //Generamos vector de candidatos
     for(int i=0; i<num_ciudades; ++i)
