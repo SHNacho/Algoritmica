@@ -1,0 +1,154 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Engineering Calculation Paper
+% LaTeX Template
+% Version 1.0 (20/1/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:void fusion(int T[], int inicial, int final, int U[], int V[]){
+% Dmitry Volynkin (dim_voly@yahoo.com.au)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[11pt,a4paper]{article} % Use A4 paper with a 12pt font size - different paper sizes will require manual recalculation of page margins and border positions
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{color}
+\definecolor{gray97}{gray}{.97}
+\definecolor{gray75}{gray}{.75}
+\definecolor{gray45}{gray}{.45}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\lstset{language=C++,
+	frame=Ltb,
+	framerule=0pt,
+	aboveskip=.5cm,
+	framextopmargin=3pt,
+	framexbottommargin=3pt,
+	framexleftmargin=0.2cm,
+	framexrightmargin=0cm,
+	framesep=0pt,
+	rulesep=1.4pt,
+	backgroundcolor=\color{gray97},
+	rulesepcolor=\color{gray45},
+	%
+	stringstyle=\color{red!80!black}\ttfamily,
+	showstringspaces = false,
+	basicstyle=\ttfamily,
+	commentstyle=\color{green!50!black}\ttfamily,
+	keywordstyle=\color{blue}\ttfamily,
+	morecomment=[l][\color{magenta}]{\#},
+	%
+	numbers=left,
+	numbersep=10pt,
+	numberstyle=\tiny,
+	numberfirstline = false,
+	breaklines=true,
+	postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}},
+	xleftmargin=0.7cm,
+	xrightmargin=0.3cm,
+	tabsize=4,
+}
+
+% minimizar fragmentado de listados
+\lstnewenvironment{listing}[1][]
+{\lstset{#1}\pagebreak[0]}{\pagebreak[0]}
+
+\lstdefinestyle{consola}
+{basicstyle=\scriptsize\bf\ttfamily,
+	backgroundcolor=\color{gray75},
+}
+
+\lstdefinestyle{C++}
+{language=C++,
+}
+
+
+\usepackage{marginnote} % Required for margin notes
+\usepackage{wallpaper} % Required to set each page to have a background
+\usepackage{lastpage} % Required to print the total number of pages
+\usepackage[left=1.3cm,right=4.6cm,top=2cm,bottom=4.0cm,marginparwidth=3.4cm]{geometry} % Adjust page margins
+\usepackage{amsmath} % Required for equation customization
+\usepackage{amssymb} % Required to include mathematical symbols
+\usepackage{xcolor} % Required to specify colors by name
+\usepackage{fancyhdr} % Required to customize headers
+\setlength{\headheight}{80pt} % Increase the size of the header to accommodate meta-information
+\pagestyle{fancy}\fancyhf{} % Use the custom header specified below
+\renewcommand{\headrulewidth}{0pt} % Remove the default horizontal rule under the header
+
+\setlength{\parindent}{0cm} % Remove paragraph indentation
+\newcommand{\tab}{\hspace*{2em}} % Defines a new command for some horizontal space
+
+\newcommand\BackgroundStructure{ % Command to specify the background of each page
+\setlength{\unitlength}{1mm} % Set the unit length to millimeters
+
+\setlength\fboxsep{0mm} % Adjusts the distance between the frameboxes and the borderlines
+\setlength\fboxrule{0.5mm} % Increase the thickness of the border line
+\put(10, 10){\fcolorbox{black}{blue!10}{\framebox(155,247){}}} % Main content box
+\put(165, 10){\fcolorbox{black}{blue!10}{\framebox(37,247){}}} % Margin box
+\put(10, 261){\fcolorbox{black}{white!10}{\framebox(192, 27){}}} % Header box
+\put(145, 270){\includegraphics[height=15mm,keepaspectratio]{../logo.png}} % Logo box - maximum height/width: 
+}
+
+%----------------------------------------------------------------------------------------
+%	HEADER INFORMATION
+%----------------------------------------------------------------------------------------
+
+\fancyhead[L]{\begin{tabular}{l r | l r} % The header is a table with 4 columns
+		\textbf{ALGORÍTMICA} &  & \textbf{Adrián Carmona Lupiáñez} \\ % Project name and page count
+		\textbf{Práctica} & 3 & \textbf{Ignacio Sánchez Herrera}  \\ % Version and reviewed date
+		&  & \textbf{Jacobo Casado de Gracia} \\
+		\textbf{Página} & \thepage/\pageref{LastPage} & \textbf{Jesús José Mª Maldonado Arroyo} \\
+		& & \textbf{Juan Miguel Hernández Gómez} \\
+\end{tabular}}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\AddToShipoutPicture{\BackgroundStructure} % Set the background of each page to that specified above in the header information section
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT CONTENT
+%----------------------------------------------------------------------------------------
+
+En esta práctica vamos a analizar el uso de los algoritmos “voraces” o “greedy”, algoritmos que seleccionan en cada momento lo mejor de entre un conjunto de candidatos, sin tener en cuenta lo ya hecho, para obtener una solución “rápida” al problema.
+
+Vamos a tener dos problemas a los cuales vamos a aplicar esta manera de resolverlos y mediremos su eficiencia teórica.
+
+Una vez diseñado el algoritmo, veremos los resultados de la ejecución y los compararemos con los resultados “óptimos”, generados tras resolver el problema de la menor manera posible.
+
+Recordemos que los algoritmos greedy no aseguran generar soluciones optimales siempre; esta desventaja es una ventaja en problemas en los que es muy difícil alcanzar la solución óptima, apliquemos el algoritmo que apliquemos, como el problema que se propone a continuación. No obstante, veremos que los resultados, a pesar de no ser los óptimos, son bastante eficientes, así como el tiempo de ejecución del algoritmo.
+
+
+\section{Problema común (Viajante de comercio)}
+
+Como hemos comentado anteriormente, aplicar un algoritmo que nos dé el resultado más óptimo para este problema es bastante complicado y su tiempo de ejecución se incrementaría bastante.
+
+Es por eso por lo que el enfoque Greedy es una manera eficiente de solucionar este problema, generando un resultado que no es el óptimo pero se acerca a ello.
+
+El problema se resume en encontrar un circuito hamiltoniano para una serie de puntos, en este caso ciudades, de manera que se recorran todas ellas sin volver a pasar por ninguna, de manera que la distancia total entre estas ciudades, es decir, del circuito, sea la mínima (y así minimizamos el recorrido).
+
+\subsection{Algoritmo basado en cercanía}
+
+\begin{lstlisting}[style=C++]
+
+\end{lstlisting} 
+
+\newpage
+
+%----------------------------------------------------------------------------------------
+
+%\marginnote{\textbf{NOTA}: Algoritmo al que calcular la eficiencia.}
+
+\end{document}
