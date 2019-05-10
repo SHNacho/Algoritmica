@@ -45,9 +45,17 @@ return(parada);
 
 int main(int argc, char **argv){
 
-    ifstream input_file(argv[1]);
+    
     string line;
     int dimension;
+
+    if(argc<5){
+      cout << "Faltan argumentos:\n"
+              "./gasolineras [archivo] [autonomia] [ciudad origen] [ciudad destino]"
+           << endl;
+    }
+
+    ifstream input_file(argv[1]);
     double autonomia = atoi(argv[2]);
 
     int ciudad;
@@ -132,8 +140,8 @@ int main(int argc, char **argv){
             solucion.push_back(parada);
             pos_actual = v[parada];
           }else{
-              cout << "No podemos llegar a ninguna otra gasolinera" << endl;
-              fin = true;
+            cout << "No podemos llegar a ninguna otra gasolinera" << endl;
+            fin = true;
           }
 
         }
