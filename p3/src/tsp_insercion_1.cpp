@@ -76,8 +76,6 @@ int main(int argc, char **argv){
         }
     }
 
-    distancias.draw();
-
     //Generamos vector de candidatos
     for(int i=0; i<num_ciudades; ++i)
         candidatos.push_back(i);
@@ -166,6 +164,7 @@ int main(int argc, char **argv){
     //Insertamos de nuevo el primer elemento del conjunto solución
     // ya que es un caamino cerrado
     solucion.push_back(*solucion.begin());
+    ++tam_solucion;
 
     //Mostramos la solución
     cout << "Solucion: " << endl;
@@ -184,8 +183,8 @@ int main(int argc, char **argv){
     cout << "Distancia total recorrida: " << distancia_recorrida << endl;
     
     //Salida de la solución a fichero
-    ofstream output_file("data/ulysses16_insercion.txt");
-    for(int i=0; i<num_ciudades; ++i){
+    ofstream output_file("data/ulysses16_insercion_1.txt");
+    for(int i=0; i<tam_solucion; ++i){
         int c = solucion[i];
         output_file << c+1 << " " << v_coordenadas[c].first << " " << v_coordenadas[c].second << endl;
     }
