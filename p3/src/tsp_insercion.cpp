@@ -23,11 +23,10 @@ int main(int argc, char **argv){
         cout << "ERROR. Faltan argumentos [archivo de datos]" << endl;
         exit(-1);
     }
-    
-    string input_filename = "data/input/";
-    if(input_filename.find("data/input")){
-        input_filename = "";
-    }
+    string output_filename = "data/output/";
+    output_filename += "a280.tsp";
+    output_filename += "_insercion.txt";
+    string input_filename;
     input_filename += argv[1];
     ifstream input_file(input_filename);
     string line;
@@ -168,13 +167,13 @@ int main(int argc, char **argv){
     //Cálculo de la aumento_distancia total recorrida
     double distancia_recorrida = 0.00;
     for(int i=0; i<tam_solucion-1; ++i){
-        distancia_recorrida += distancias[i][i+1];
+        distancia_recorrida += distancias[solucion[i]][solucion[i+1]];
     }
 
     cout << "Distancia total recorrida: " << distancia_recorrida << endl;
     
     //Salida de la solución a fichero
-    ofstream output_file("data/output/ulysses16_insercion.txt");
+    ofstream output_file(output_filename);
     for(int i=0; i<tam_solucion; ++i){
         int c = solucion[i];
         output_file << c+1 << " " << v_coordenadas[c].first << " " << v_coordenadas[c].second << endl;

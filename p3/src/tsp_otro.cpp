@@ -19,7 +19,14 @@ int main(int argc, char **argv){
         exit(-1);
     }
     
-    ifstream input_file(argv[1]);
+    string output_filename = "data/output/";
+    output_filename += "a280.tsp";
+    output_filename += "_otro.txt";
+
+    string input_filename;
+    input_filename += argv[1];
+    ifstream input_file(input_filename);
+
     string line;
     int num_ciudades;
 
@@ -100,13 +107,14 @@ int main(int argc, char **argv){
     //Cálculo de la aumento_distancia total recorrida
     double distancia_recorrida = 0.00;
     for(int i=0; i<tam_solucion-1; ++i){
-        distancia_recorrida += distancias[i][i+1];
+        distancia_recorrida += distancias[solucion[i]][solucion[i+1]];
     }
 
     cout << "Distancia total recorrida: " << distancia_recorrida << endl;
     
+    
     //Salida de la solución a fichero
-    ofstream output_file("data/output/ulysses16_otro.txt");
+    ofstream output_file(output_filename);
     for(int i=0; i<tam_solucion; ++i){
         int c = solucion[i];
         output_file << c+1 << " " << v_coordenadas[c].first << " " << v_coordenadas[c].second << endl;

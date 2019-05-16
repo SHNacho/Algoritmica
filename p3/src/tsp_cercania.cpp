@@ -37,7 +37,13 @@ int BuscaMenor(vector<double> v, vector<int> & candidatos){
 
 int main(int argc, char **argv){
 
-    ifstream input_file(argv[1]);
+    string output_filename = "data/output/";
+    output_filename += "a280.tsp";
+    output_filename += "_cercania.txt";
+    string input_filename;
+    input_filename += argv[1];
+    ifstream input_file(input_filename);
+
     string line;
     int dimension;
 
@@ -129,13 +135,21 @@ int main(int argc, char **argv){
       cout << solucion [i]  + 1<< " --> ";
     }
     // Añadimos la ciudad inicial para indicar que completamos un ciclo.
-   cout << " 1 " << " FIN.";
+   cout << " 1 " << " FIN." << endl;
+
+   //Cálculo de la distancia total recorrida
+    double distancia_recorrida = 0.00;
+    for(int i=0; i<dimension-1; ++i){
+        distancia_recorrida += m[solucion[i]][solucion[i+1]];
+    }
+
+    cout << "Distancia total recorrida: " << distancia_recorrida << endl;
         
    
    // Volcamos la salida a un fichero para su visualizacion con la ayuda de 
    // GNUPLOT.
    
-    ofstream ficherosalida("data/ulysses_camino.txt");
+    ofstream ficherosalida(output_filename);
     for (int i = 0; i < dimension; ++i){
         int c = solucion[i];
         ficherosalida << c+1 << " " << v[c].first << " " << v[c].second << endl;
