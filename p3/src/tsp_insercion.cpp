@@ -7,8 +7,6 @@
 #include <limits>
 #include "matriz.h"
 
-//#define TEST
-
 using namespace std;
 
 /**
@@ -117,9 +115,6 @@ int main(int argc, char **argv){
     //Comienzo del algoritmo
     vector<int>::iterator sol_it, cand_it;  //Iteradores de los vectores de candidatos y solución
 
-    #ifdef TEST
-        int i = 0;
-    #endif
     //Buscamos la ciudad que menos aumenta el tamaño del recorrio
     while(tam_solucion < num_ciudades){
 
@@ -155,20 +150,6 @@ int main(int argc, char **argv){
         solucion.insert(pos_insercion, ciudad_insertada);
         candidatos[ciudad_insertada] = -1;  //La "eliminamos" del vector de candidatos
         ++tam_solucion;                     //Aumentamos el tamaño del vector solución
-
-#ifdef TEST
-        string of = to_string(i);
-
-        ofstream output_file(of);
-        for(int i=0; i<tam_solucion; ++i){
-            int c = solucion[i];
-            output_file << c+1 << " " << v_coordenadas[c].first << " " << v_coordenadas[c].second << endl;
-        }
-        int c = solucion[0];
-        output_file << c+1 << " " << v_coordenadas[c].first << " " << v_coordenadas[c].second << endl;
-        output_file.close();
-        ++i;
-#endif
     }    
 
     //Insertamos de nuevo el primer elemento del conjunto solución
