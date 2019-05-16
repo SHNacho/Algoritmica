@@ -126,22 +126,22 @@ En esta práctica vamos a analizar el uso de los algoritmos “voraces” o “g
 
 Vamos a tener dos problemas a los cuales vamos a aplicar esta manera de resolverlos y mediremos su eficiencia teórica.\\
 
-Una vez diseñado el algoritmo, veremos los resultados de la ejecución y los compararemos con los resultados “óptimos”, generados tras resolver el problema de la menor manera posible.\\
+Una vez diseñado el algoritmo, veremos los resultados de la ejecución y los compararemos con los resultados “óptimos”, generados tras resolver el problema de la mejor manera posible.\\
 
-Recordemos que los algoritmos greedy no aseguran generar soluciones optimales siempre; esta desventaja es una ventaja en problemas en los que es muy difícil alcanzar la solución óptima, apliquemos el algoritmo que apliquemos, como el problema que se propone a continuación. No obstante, veremos que los resultados, a pesar de no ser los óptimos, son bastante eficientes, así como el tiempo de ejecución del algoritmo.\\
+Recordemos que los algoritmos greedy no aseguran generar soluciones optimales siempre; esta desventaja es una ventaja en problemas en los que es muy difícil alcanzar la solución óptima, apliquemos el algoritmo que apliquemos, como el problema que se propone a continuación. No obstante, veremos que los resultados, a pesar de no ser los óptimos, son bastante eficientes, así como sobretodo el tiempo de ejecución del algoritmo.\\
 
 
 \section{Problema común (Viajante de comercio)}
 
 Como hemos comentado anteriormente, aplicar un algoritmo que nos dé el resultado más óptimo para este problema es bastante complicado y su tiempo de ejecución se incrementaría bastante.\\
 
-Es por eso por lo que el enfoque Greedy es una manera eficiente de solucionar este problema, generando un resultado que no es el óptimo pero se acerca a ello.\\
+Es por eso por lo que el enfoque greedy es una manera eficiente de solucionar este problema, generando un resultado que no es el óptimo pero se acerca a ello.\\
 
 El problema se resume en encontrar un circuito hamiltoniano para una serie de puntos, en este caso ciudades, de manera que se recorran todas ellas sin volver a pasar por ninguna, de manera que la distancia total entre estas ciudades, es decir, del circuito, sea la mínima (y así minimizamos el recorrido).\\
 
 \subsection{Algoritmo basado en cercanía}
 
-En primer lugar, hemos desarrollado una estrategia basada en encontrar el “vecino más cercano”: tomamos una ciudad inicial inicial de manera arbitraria, y buscamos en el vector de ciudades que no se han visitado la ciudad más cercana a esta. Una vez encontrada, se procede a hacer un borrado lógico de la ciudad en el vector, y se procede a encontrar la ciudad más cercana a esta última visitada.\\
+En primer lugar, hemos desarrollado una estrategia basada en encontrar el “vecino más cercano”: tomamos una ciudad inicial de manera arbitraria, y buscamos en el vector de ciudades que no se han visitado la ciudad más cercana a esta. Una vez encontrada, se procede a hacer un borrado lógico de la ciudad en el vector, y se procede a encontrar la ciudad más cercana a esta última visitada.\\
 
 El procedimiento se repite hasta que todas las ciudades se hayan visitado, obteniendo el camino.\\
 
@@ -198,7 +198,7 @@ cout << " 1 " << " FIN.";
 \end{lstlisting}
 
 \subsubsection{Pseudocódigo}
-El algoritmo por cercanía en pseudocódigo es el siguiente:
+El pseudocódigo del algoritmo por cercanía es el siguiente:
 \begin{lstlisting}
 N = |V|
 S = {primera ciudad de V}
@@ -212,6 +212,7 @@ Devolver S
 \end{lstlisting}
 
 \subsubsection{Visualización}
+Aquí podemos observar un resultado de aplicar el algoritmo.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=13cm]{data/graphics/cercania/cercania.pdf}
@@ -266,61 +267,46 @@ int tam_solucion = solucion.size(); //Tamanio del conjunto solucion
 
 //Comienzo del algoritmo
 vector<int>::iterator sol_it, cand_it;  //Iteradores de los vectores de candidatos y solucion
-vector<int>::iterator ciudad_origen_it; //Iterador que almacenara la posicion de la ciudad del
-//conjunto solucion, que tiene mas cerca a una ciudad
-//del conjuno candidatos    
 
-while(tam_solucion < num_ciudades){ //Mientras que no hayamos recorrido todas las ciudades
-	//Buscamos la ciudad mas cercana al conjunto solucion
-	int ciudad_mas_cercana = 0;
-	double distancia_mas_cercana = INF;
+//Buscamos la ciudad que menos aumenta el tamanio del recorrio
+while(tam_solucion < num_ciudades){
+	int ciudad_insertada;
+	vector<int>::iterator pos_insercion;
+	double aumento_minimo = INF;
 	
-	for(sol_it=solucion.begin(); sol_it!=solucion.end(); ++sol_it){
-		for (cand_it=candidatos.begin(); cand_it!=candidatos.end(); ++cand_it){
-			if ((distancias[*sol_it][*cand_it] < distancia_mas_cercana) && (*cand_it != -1)){
-				ciudad_origen_it = sol_it;
-				ciudad_mas_cercana = *cand_it;
-				distancia_mas_cercana = distancias[*sol_it][*cand_it];
-			}
+	for(cand_it = candidatos.begin(); cand_it != candidatos.end(); ++cand_it){
+		if(*cand_it != -1){
+			for(sol_it=solucion.begin(); sol_it!=solucion.end(); ++sol_it){
+				//Tenemos en cuenta que es un ciclo por lo que la ciudad siguiente al
+				//ultimo elemento del conjunto solucion es el primer elemento
+				vector<int>::iterator ciudad_siguiente = sol_it;
+				if(sol_it == --solucion.end())
+					ciudad_siguiente = solucion.begin();
+				else
+					++ciudad_siguiente;
+				
+				//Calculamos el aumento del recorrido al insertar un elemento de los candidatos
+				double aumento_distancia = (distancias[*sol_it][*cand_it]+distancias[*cand_it][*ciudad_siguiente]) - distancias[*sol_it][*ciudad_siguiente];
+				//Nos quedamos con la ciudad que menos aumente el recorrido
+				if(aumento_distancia < aumento_minimo){
+					ciudad_insertada = *cand_it;
+					aumento_minimo = aumento_distancia;
+					pos_insercion = ciudad_siguiente;
+				}
+			}  
 		}
 	}
 	
-	//Una vez encontrada vemos en que posicion del conjunto solucion insertarla para minimizar el trayecto
-	vector<int>::iterator ciudad_siguiente_it = ciudad_origen_it;
-	vector<int>::iterator ciudad_anterior_it = ciudad_origen_it;
-	vector<int>::iterator final_it = solucion.end();
-	final_it--;
-	
-	//Puesto que el recorrido es un ciclo (cerrado) hay que contemplar el caso de que la
-	//ciudad a insertar sea adyacente al primer o ultimo elemento del conjunto solucion
-	if(ciudad_origen_it == solucion.begin()){
-		++ciudad_siguiente_it;
-		ciudad_anterior_it = final_it;
-	}
-	else if(ciudad_origen_it == final_it){
-		ciudad_siguiente_it = solucion.begin();
-		--ciudad_anterior_it;
-	}
-	else{
-		++ciudad_siguiente_it;
-		--ciudad_anterior_it;
-	}
-	
-	
-	if(distancias[ciudad_mas_cercana][*ciudad_anterior_it] < distancias[ciudad_mas_cercana][*ciudad_siguiente_it]){
-		solucion.insert(ciudad_origen_it, ciudad_mas_cercana);
-	}
-	else{
-		solucion.insert(ciudad_siguiente_it, ciudad_mas_cercana);
-	}
-	
-	candidatos[ciudad_mas_cercana] = -1;
-	tam_solucion++;
-}
+	//Insertamos la ciudad
+	solucion.insert(pos_insercion, ciudad_insertada);
+	candidatos[ciudad_insertada] = -1;  //La "eliminamos" del vector de candidatos
+	++tam_solucion;                     //Aumentamos el tamanio del vector solucion
+}    
 
 //Insertamos de nuevo el primer elemento del conjunto solucion
-// ya que es un caamino cerrado
+// ya que es un camino cerrado
 solucion.push_back(*solucion.begin());
+++tam_solucion;
 
 //Mostramos la solucion
 cout << "Solucion: " << endl;
@@ -332,7 +318,7 @@ cout << endl;
 \end{lstlisting}
 
 \subsubsection{Pseudocódigo}
-El algoritmo por inserción en pseudocódigo es el siguiente:
+El pseudocódigo del algoritmo por inserción es el siguiente:
 \begin{lstlisting}
 N = |V|
 S = {ciudad mas al Norte, 
@@ -381,29 +367,34 @@ Fijándonos en el pseudocódigo, vemos que la búsqueda de la ciudad del conjunt
 
 \newpage
 \subsection{Algoritmo con otra estrategia}
-A continuación, se ha implantado una estrategia nueva basada en las aristas para resolver este algoritmo.
+A continuación, se ha implantado una estrategia nueva para resolver este algoritmo.\\
+
+Al principio intentamos implementar una estrategia basada en el algoritmo de Kruskal para la resolución del problema, pero no conseguimos resolver los fallos que nos surgieron antes de la entrega, por lo que decidimos realizar un algoritmo greedy más sencillo, basado en insertar en cada iteración la ciudad que se encuentra más al Norte de las no insertadas.\\
+
+
+El algoritmo se basa en recorrer las ciudades de más al norte a más al sur. Sería igualmente factible haciéndolo desde cualquier extremo y hasta el opuesto.\\
 
 \subsubsection{Código del programa}
 Aquí se muestra la parte del código del programa desarrollado en C++ que contiene el algoritmo principal utilizado.
 
 \begin{lstlisting}[style=C++]
-//Ordenamos las aristas del grafo de menor a mayor
-for(int i=0; i<num_ciudades; ++i){
-	for (int j=i+1; j<num_ciudades; ++j){
-		Arista a{i, j, Distancia(v_coordenadas[i], v_coordenadas[j])};
-		aristas.insert(a);
-	}
-}
-
-//Vector con el grado de cada nodo del grafo solucion
-vector<int> grado(num_ciudades);
-grado.insert(grado.begin(), num_ciudades, 0);
-
 //Generamos vector de candidatos
 for(int i=0; i<num_ciudades; ++i)
 	candidatos.push_back(i);
 
-int tam_solucion = solucion.size(); //Tamanio del conjunto solucion
+while(tam_solucion < num_ciudades){
+	double mayor = INF * -1; // Valor de la coordenada y de la ciudad que esta mas al Norte
+	int ciudad_mas_al_Norte;
+	for(int i=0; i<num_ciudades; ++i){
+		if ((v_coordenadas[i].second > mayor) && (candidatos[i] != -1)){
+			ciudad_mas_al_Norte = i;
+			mayor = v_coordenadas[i].second;
+		}
+	}
+	solucion.push_back(ciudad_mas_al_Norte);
+	candidatos[ciudad_mas_al_Norte] = -1;
+	++tam_solucion;
+}
 
 //Mostramos la solucion
 cout << "Solucion: " << endl;
@@ -415,18 +406,45 @@ cout << endl;
 \end{lstlisting}
 
 \subsubsection{Pseudocódigo}
+El pseudocódigo del nuevo algoritmo que hemos creado es el siguiente:
+\begin{lstlisting}
+N = |V|
+S = {Conjunto vacio}
+Repetir
+	U = Buscar ciudad del conjunto V que esta mas al norte
+	Eliminar U de V
+	Insertar U en S
+Hasta que |S| = N
+Insertar de nuevo en S la primera ciudad que habiamos insertado al principio
+Devolver S
+\end{lstlisting}
 
 \subsubsection{Visualización}
+Aquí podemos observar un resultado de aplicar el algoritmo.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{data/graphics/otro/otro.pdf}
+\end{figure}
 
 \subsubsection{Eficiencia teórica}
+La búsqueda de la ciudad más al Norte es de orden $O(n)$, por lo que como se realiza $n$ veces, el algoritmo es de orden $O(n^2)$.
 
 
 \newpage
 \subsection{Comparación de algoritmos}
 En este apartado, se adjuntan, tras ejecutar los algoritmos y obtener sus resultados en un archivo de texto, la representación gráfica de los recorridos solución de los tres algoritmos.\\
 
-Como podemos observar, y era de esperar, la solución obtenida en estos tres no es la más óptima (no es el óptimo global), sino el resultado de aplicar una estrategia que minimice la distancia de ciudad en ciudad, por lo que se obtiene un resultado que no es el más óptimo pero es bastante eficiente en relación al resultado que da (que en algunos casos se aproxima al óptimo).
+Como podemos observar, y era de esperar, la solución obtenida en estos tres no es la más óptima (no es el óptimo global), sino el resultado de aplicar una estrategia que minimice la distancia de ciudad en ciudad, por lo que se obtiene un resultado que no es el más óptimo pero es bastante eficiente en relación al resultado que da (que en algunos casos se aproxima al óptimo).\\
 
+En las siguientes figuras, podemos observar de izquierda a derecha los resultados de aplicar los algoritmos de cercanía, de inserción, y el de creación propia.
+
+\begin{figure}[H]
+	\includegraphics[width=4.5cm]{data/graphics/comparacion/cercania.png}
+	\includegraphics[width=4.5cm]{data/graphics/comparacion/insercion.png}
+	\includegraphics[width=5.35cm]{data/graphics/comparacion/otro.png}
+\end{figure}
+
+En la siguiente figura podemos ver cual habría sido el resultado óptimo.
 
 
 \newpage
@@ -518,7 +536,7 @@ cout << "FIN" << endl;
 \end{lstlisting}
 
 \subsubsection{Pseudocódigo}
-
+El pseudocódigo del algoritmo para el ahorro de gasolina es el siguiente.
 \marginnote{\textbf{NOTA}: Con \textit{ciudades} también se puede entender a las gasolineras.}
 \begin{lstlisting}
 Mientras no se llegue al destino o a un punto sin salida:
@@ -533,8 +551,6 @@ Mientras no se llegue al destino o a un punto sin salida:
 	Si no podemir a ningun lado:
 		FIN;
 \end{lstlisting}
-
-
 
 \subsubsection{Visualización}
 \begin{figure}[H]
