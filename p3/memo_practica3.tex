@@ -295,6 +295,20 @@ int main(int argc, char **argv){
 }
 \end{lstlisting}
 
+\subsubsection{Pseudocódigo}
+El algoritmo por cercanía en pseudocódigo es el siguiente:
+\begin{lstlisting}
+N = |V|
+S = {primera ciudad de V}
+Repetir
+	U = Buscar ciudad del conjunto V mas cercana a la ultima ciudad insertada en S
+	Eliminar U de V
+	Insertar U en S
+Hasta que |S| = N
+Insertar de nuevo en S la primera ciudad que habiamos insertado al principio
+Devolver S
+\end{lstlisting}
+
 \subsubsection{Visualización}
 \begin{figure}[H]
 	\centering
@@ -396,7 +410,7 @@ int main(int argc, char **argv){
 	
 	//Generamos vector de candidatos
 	for(int i=0; i<num_ciudades; ++i)
-	candidatos.push_back(i);
+		candidatos.push_back(i);
 	
 	//Elegimos el recorrido inicial
 	int E = 0, O = 0, N = 0;
@@ -518,16 +532,12 @@ S = {ciudad mas al Norte,
 	ciudad mas al Este, 
 	ciudad mas al Oeste}
 Repetir
-U = Buscar ciudad del conjunto V que menos aumenta la distancia de S
-Eliminar U de V
-Insertar U en S
-Hasta que |T| = N
-Devolver T
+	U = Buscar ciudad del conjunto V que menos aumenta la distancia de S
+	Eliminar U de V
+	Insertar U en S
+Hasta que |S| = N
+Devolver S
 \end{lstlisting}
-
-
-Donde la búsqueda de la ciudad del conjunto $V$ que menos aumenta la distancia de $S$ es de orden $O(n^2)$ por lo que estaríamos hablando de un algoritmo de orden $O(n^3)$.
-
 
 \subsubsection{Visualización}
 Empezamos seleccionando 3 ciudades distanciadas.
@@ -557,9 +567,159 @@ Tras terminar obtenemos el recorrido final.
 	\includegraphics[width=13cm]{data/graphics/insercion/insercion_final.pdf}
 \end{figure}
 
+\subsubsection{Eficiencia teórica}
+Fijándonos en el pseudocódigo, vemos que la búsqueda de la ciudad del conjunto $V$ que menos aumenta la distancia de $S$ es de orden $O(n^2)$ por lo que estaríamos hablando de un algoritmo de orden $O(n^3)$.
+
 
 \newpage
 \subsection{Algoritmo con otra estrategia}
+A continuación, se ha implantado una estrategia nueva para resolver este algoritmo.
+
+\subsubsection{Código del programa}
+\begin{lstlisting}[style=C++]
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <utility>
+#include <cmath>
+#include <limits>
+#include <set>
+#include "matriz.h"
+
+using namespace std;
+
+double Distancia(const pair<double,double> & posicion_A, const pair<double,double> &posicion_B){
+	double distancia = sqrt(pow(posicion_A.first - posicion_B.first,2) + pow(posicion_A.second-posicion_B.second,2));
+	
+	return distancia;
+}
+
+/**
+* @brief Estructura que representa una arista del grafo
+* @param a Una ciudad del grafo
+* @param b Otra ciudad del grafo
+* @param distancia Distancia entre la ciudad a y b
+*/
+struct Arista{
+	int a;
+	int b;
+	double distancia;
+};
+
+struct aristaComparator{
+	bool operator ()(const Arista arista1, const Arista arista2) const{
+		if (arista1.distancia < arista2.distancia)
+			return true;
+		else 
+			return false;
+	}
+};
+
+/**
+* Este programa busca un ciclo que recorra todas las ciudades de 
+* un mapa mediante un algoritmo de tipo greedy. En esta version
+* del algoritmo, dado un recorrido inicial que contiene tres nodos
+* en cada paso se busca el nodo mas cercano al conjunto solucion que
+* se encuentre en el conjunto de candidatos. El nodo mas cercano es
+* insertado en la posicion del vector que menos aumente el recorrido.
+*/
+int main(int argc, char **argv){
+	const double INF = numeric_limits<double>::max();
+	
+	if(argc < 2){
+		cout << "ERROR. Faltan argumentos [archivo de datos]" << endl;
+		exit(-1);
+	}
+	
+	ifstream input_file(argv[1]);
+	string line;
+	int num_ciudades;
+	
+	int ciudad;
+	double coor_x, coor_y;
+	vector<pair<double, double> > v_coordenadas;
+	pair<double, double> coordenadas;
+	
+	vector<int> candidatos;
+	vector<int> solucion;
+	
+	//Movemos el offset a la linea en la que se dice la dimension del grafo
+	for(int i=0; i<3; ++i){
+		getline(input_file, line);
+	}
+	
+	getline(input_file, line);
+	line.erase(0, 11);
+	num_ciudades = atoi(line.c_str());
+	
+	//Reservamos espacio para el grafo
+	matriz <double> distancias(num_ciudades, num_ciudades, 0);
+	set <Arista, aristaComparator> aristas;
+	
+	//Movemos el offset al comienzo de los datos
+	for(int i=0; i<3; ++i){
+		getline(input_file, line);
+	}
+	
+	//Tomamos los datos
+	for (int i=0; i<num_ciudades; ++i){
+		input_file >> ciudad;
+		input_file >> coor_x;
+		input_file >> coor_y;
+		coordenadas.first = coor_x;
+		coordenadas.second = coor_y;
+		v_coordenadas.push_back(coordenadas);
+	}
+	
+	//Ordenamos las aristas del grafo de menor a mayor
+	for(int i=0; i<num_ciudades; ++i){
+		for (int j=i+1; j<num_ciudades; ++j){
+			Arista a{i, j, Distancia(v_coordenadas[i], v_coordenadas[j])};
+			aristas.insert(a);
+		}
+	}
+	
+	//Vector con el grado de cada nodo del grafo solucion
+	vector<int> grado(num_ciudades);
+	grado.insert(grado.begin(), num_ciudades, 0);
+	
+	
+	
+	//Generamos vector de candidatos
+	for(int i=0; i<num_ciudades; ++i)
+		candidatos.push_back(i);
+	
+	int tam_solucion = solucion.size(); //Tamanio del conjunto solucion
+	
+	//Mostramos la solucion
+	cout << "Solucion: " << endl;
+	
+	for(int i=0; i<tam_solucion; ++i){
+		cout << solucion[i]+1 << " ";
+	}
+	cout << endl;
+	
+	//Calculo de la distancia total recorrida
+	double distancia_recorrida = 0.00;
+	for(int i=0; i<tam_solucion-1; ++i){
+		distancia_recorrida += distancias[i][i+1];
+	}
+	
+	cout << "Distancia total recorrida: " << distancia_recorrida << endl;
+	
+	//Salida de la solucion a fichero
+	ofstream output_file("data/ulysses16_aristas.txt");
+	for(int i=0; i<tam_solucion; ++i){
+		int c = solucion[i];
+		output_file << c+1 << " " << v_coordenadas[c].first << " " << v_coordenadas[c].second << endl;
+	}
+	
+	return (0);
+}
+\end{lstlisting}
+
+\subsubsection{Pseudocódigo}
 
 \subsubsection{Visualización}
 
