@@ -148,151 +148,53 @@ El procedimiento se repite hasta que todas las ciudades se hayan visitado, obten
 Hemos creado también una clase matriz que hemos usado de forma auxiliar para simplificar la parte del código del algoritmo que se detalla a continuación.\\
 
 \subsubsection{Código del programa}
+Aquí se muestra la parte del código del programa desarrollado en C++ que contiene el algoritmo principal utilizado.
+
 \begin{lstlisting}[style=C++]
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <utility>
-#include <cmath>
-#include <limits>
-#include "matriz.h"
+//Declaramos los vectores que albergaran los conjuntos Candidato y Solucion
+vector<int> solucion;
+vector<int> candidatos;
 
-using namespace std;
-const double INF = numeric_limits<double>::max();
+// Inicializamos el conjunto de candidatos, el rango sera [0,15]. 
+for(int i = 0; i<dimension;++i){
+	candidatos.push_back(i);
+}
 
+// Abergamos la primera ciudad en el conjunto solucion.
+int i = 0;
+solucion.push_back(0);
+candidatos[0] = -1;
 
-/*  FUNCION
-*  Esta funcion recibe como parametros un vector, que son las distintas distancias
-* a las distintas ciudades desde una misma ciudad y el vector candidatos para comprobar 
-* si ya se han visitado las respectivas ciudades.
+// variable donde guardaremos el indice, es decir, la ciudad a donde nos dirigimos.
+int menor;
+
+/*CUERPO DEL ALGORITMO:
+* La idea es encontrar la ciudad mas cercana haciendo uso de la matriz de
+* distancias. Una vez encontrada la ciudad (indice) al que nos dirigimos,
+* la posicion candidatos[indice] lo hacemos -1 para mostrar que esa ciudad
+* ya la hemos visitado y introducimos el indice en el vector de soluciones.
 * 
-* La funcion encuentra el menor elemento del vector v y devuelve la posicion dentro
-* del vector de dicho elemento.
+* Para concluir, asignamos el valor del indice a la variable i para empezar
+* de nuevo todo el proceso
 */
-int BuscaMenor(vector<double> v, vector<int> & candidatos){
-	int menor;
-	double minimo = INF;
-	for(int i = 0;i< v.size(); ++i){
-		if( v[i] < minimo && candidatos[i] !=-1){
-			minimo = v[i];
-			menor = i;
-		}
-	}
-	return(menor);
+while(solucion.size()< dimension   ){
+	vector <double> c;
+	m.get_Fila(i,c);
+	menor =BuscaMenor(c, candidatos);
+	solucion.push_back(menor);
+	candidatos[menor] = -1;
+	i = menor;
 }
 
+// Imprimimos el vector solucion teniendo en cuenta que para la implementacion
+// La ciudad numero 1 ha sido el indice numero 0, por lo tanto tenemos que sumar
+// 1 a los valores del vector solucion.
 
-int main(int argc, char **argv){
-
-	ifstream input_file(argv[1]);
-	string line;
-	int dimension;
-
-	int ciudad;
-	double coor_x, coor_y;
-
-	vector<pair<double, double> > v;
-	pair<double, double> p;
-	
-	//Movemos el offset a la linea en la que se dice la dimension del grafo
-	for(int i=0; i<3; ++i){
-		getline(input_file, line);
-	}
-	
-	getline(input_file, line);
-	line.erase(0, 11);
-	dimension = atoi(line.c_str());
-	
-	//Reservamos espacio para el grafo
-	matriz <double> m(dimension, dimension, INF);
-	
-	//Movemos el offset al comienzo de los datos
-	for(int i=0; i<3; ++i){
-		getline(input_file, line);
-	}
-	
-	//Tomamos los datos
-	for (int i=0; i<dimension; ++i){
-		input_file >> ciudad;
-		input_file >> coor_x;
-		input_file >> coor_y;
-		p.first = coor_x;
-		p.second = coor_y;
-		v.push_back(p);
-	}
-	
-	//Calculamos las distancias y las metemos en la matriz que representa
-	//el grafo
-	for(int i=0; i<dimension; ++i){
-		for (int j=i+1; j<dimension; ++j){
-			m[i][j]=sqrt(pow(v[j].first - v[i].first, 2) + pow(v[j].second - v[i].second, 2));
-			m[j][i]=m[i][j];
-		}
-	}
-	
-	//Algoritmo basado en cercanias. La idea es ir a la ciudad mas cercana
-	//sin formar un ciclo. Exceptuando la ultima.
-	
-	//Declaramos los vectores que albergaran los conjuntos Candidato y Solucion
-	vector<int> solucion;
-	vector<int> candidatos;
-	
-	// Inicializamos el conjunto de candidatos, el rango sera [0,15]. 
-	for(int i = 0; i<dimension;++i){
-		candidatos.push_back(i);
-	}
-	
-	// Abergamos la primera ciudad en el conjunto solucion.
-	int i = 0;
-	solucion.push_back(0);
-	candidatos[0] = -1;
-	
-	// variable donde guardaremos el indice, es decir, la ciudad a donde nos dirigimos.
-	int menor;
-	
-	/*CUERPO DEL ALGORITMO:
-	* La idea es encontrar la ciudad mas cercana haciendo uso de la matriz de
-	* distancias. Una vez encontrada la ciudad (indice) al que nos dirigimos,
-	* la posicion candidatos[indice] lo hacemos -1 para mostrar que esa ciudad
-	* ya la hemos visitado y introducimos el indice en el vector de soluciones.
-	* 
-	* Para concluir, asignamos el valor del indice a la variable i para empezar
-	* de nuevo todo el proceso
-	*/
-	while(solucion.size()< dimension   ){
-		vector <double> c;
-		m.get_Fila(i,c);
-		menor =BuscaMenor(c, candidatos);
-		solucion.push_back(menor);
-		candidatos[menor] = -1;
-		i = menor;
-	}
-	
-	// Imprimimos el vector solucion teniendo en cuenta que para la implementacion
-	// La ciudad numero 1 ha sido el indice numero 0, por lo tanto tenemos que sumar
-	// 1 a los valores del vector solucion.
-	
-	for(int i = 0; i< solucion.size();i++){
-		cout << solucion [i]  + 1<< " --> ";
-	}
-	// Aniadimos la ciudad inicial para indicar que completamos un ciclo.
-	cout << " 1 " << " FIN.";
-	
-	
-	// Volcamos la salida a un fichero para su visualizacion con la ayuda de 
-	// GNUPLOT.
-	
-	ofstream ficherosalida("data/ulysses_camino.txt");
-	for (int i = 0; i < dimension; ++i){
-		int c = solucion[i];
-		ficherosalida << c+1 << " " << v[c].first << " " << v[c].second << endl;
-	}
-	
-	
-	//FIN.
-	return (0);
+for(int i = 0; i< solucion.size();i++){
+	cout << solucion [i]  + 1<< " --> ";
 }
+// Aniadimos la ciudad inicial para indicar que completamos un ciclo.
+cout << " 1 " << " FIN.";
 \end{lstlisting}
 
 \subsubsection{Pseudocódigo}
@@ -323,7 +225,7 @@ $$T(n) = \sum_{i=1}^{n}\sum_{j=1}^{n}$$
 $$T(n) = n*n$$
 $$T(n) \in O(n^2)$$\\
 
-Esto es debido a que la función $BuscaMenor$ es de tiempo $n$, y se ejecuta también $n$ veces en el bucle $while$ de la línea 112.
+Esto es debido a que la función $BuscaMenor$ es de tiempo $n$, y se ejecuta también $n$ veces en el bucle $while$ de la línea 30.
 
 
 
@@ -332,196 +234,101 @@ Esto es debido a que la función $BuscaMenor$ es de tiempo $n$, y se ejecuta tam
 Este algoritmo greedy para resolver el problema del viajante de comercio consiste en partir de un circuito inicial. En nuestro caso las ciudades elegidas para el circuito inicial son la más al Este, la más al Oeste y la más al Norte. Una vez escogido el recorrido inicial comienza el algoritmo. Nuestro algoritmo de inserción se basa en insertar en cada iteración la ciudad que menos aumenta el tamaño de este.
 
 \subsubsection{Código del programa}
+Aquí se muestra la parte del código del programa desarrollado en C++ que contiene el algoritmo principal utilizado.
+
 \begin{lstlisting}[style=C++]
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <utility>
-#include <cmath>
-#include <limits>
-#include "matriz.h"
+//Elegimos el recorrido inicial
+int E = 0, O = 0, N = 0;
+double mas_al_E = v_coordenadas[0].first;
+double mas_al_O = v_coordenadas[0].first; 
+double mas_al_N = v_coordenadas[0].second;
 
-using namespace std;
+for(int i=1; i<num_ciudades; ++i){
+	if(v_coordenadas[i].second > mas_al_N){
+		mas_al_N = v_coordenadas[i].second;
+		N = i;
+	}
+	if(v_coordenadas[i].first > mas_al_E){
+		mas_al_E = v_coordenadas[i].first;
+		E = i;
+	}
+	if(v_coordenadas[i].first < mas_al_O){
+		mas_al_O = v_coordenadas[i].first;
+		O = i;
+	}
+}
 
+solucion.push_back(O); candidatos[O] = -1;
+solucion.push_back(N); candidatos[N] = -1;
+solucion.push_back(E); candidatos[E] = -1;
 
-/**
-Este programa busca un ciclo que recorra todas las ciudades de un mapa mediante un algoritmo de tipo greedy. En esta version del algoritmo, dado un recorrido inicial que contiene tres nodos en cada paso se busca el nodo mas cercano al conjunto solucion que se encuentre en el conjunto de candidatos. El nodo mas cercano es insertado en la posicion del vector que menos aumente el recorrido.
-*/
-int main(int argc, char **argv){
-	const double INF = numeric_limits<double>::max();
+int tam_solucion = solucion.size(); //Tamanio del conjunto solucion
+
+//Comienzo del algoritmo
+vector<int>::iterator sol_it, cand_it;  //Iteradores de los vectores de candidatos y solucion
+vector<int>::iterator ciudad_origen_it; //Iterador que almacenara la posicion de la ciudad del
+//conjunto solucion, que tiene mas cerca a una ciudad
+//del conjuno candidatos    
+
+while(tam_solucion < num_ciudades){ //Mientras que no hayamos recorrido todas las ciudades
+	//Buscamos la ciudad mas cercana al conjunto solucion
+	int ciudad_mas_cercana = 0;
+	double distancia_mas_cercana = INF;
 	
-	if(argc < 2){
-		cout << "ERROR. Faltan argumentos [archivo de datos]" << endl;
-		exit(-1);
-	}
-	
-	ifstream input_file(argv[1]);
-	string line;
-	int num_ciudades;
-	
-	int ciudad;
-	double coor_x, coor_y;
-	
-	vector<pair<double, double> > v_coordenadas;
-	pair<double, double> coordenadas;
-	
-	vector<int> candidatos;
-	vector<int> solucion;
-	
-	//Movemos el offset a la linea en la que se dice la dimension del grafo
-	for(int i=0; i<3; ++i){
-		getline(input_file, line);
-	}
-	
-	getline(input_file, line);
-	line.erase(0, 11);
-	num_ciudades = atoi(line.c_str());
-	
-	//Reservamos espacio para el grafo
-	matriz <double> distancias(num_ciudades, num_ciudades, 0);
-	
-	//Movemos el offset al comienzo de los datos
-	for(int i=0; i<3; ++i){
-		getline(input_file, line);
-	}
-	
-	//Tomamos los datos
-	for (int i=0; i<num_ciudades; ++i){
-		input_file >> ciudad;
-		input_file >> coor_x;
-		input_file >> coor_y;
-		coordenadas.first = coor_x;
-		coordenadas.second = coor_y;
-		v_coordenadas.push_back(coordenadas);
-	}
-	
-	//Calculamos las distancias y las metemos en la matriz que representa
-	//el grafo
-	for(int i=0; i<num_ciudades; ++i){
-		for (int j=i+1; j<num_ciudades; ++j){
-			distancias[i][j]=sqrt(pow(v_coordenadas[j].first - v_coordenadas[i].first, 2) +
-			pow(v_coordenadas[j].second - v_coordenadas[i].second, 2));
-			distancias[j][i]=distancias[i][j];
-		}
-	}
-	
-	distancias.draw();
-	
-	//Generamos vector de candidatos
-	for(int i=0; i<num_ciudades; ++i)
-		candidatos.push_back(i);
-	
-	//Elegimos el recorrido inicial
-	int E = 0, O = 0, N = 0;
-	double mas_al_E = v_coordenadas[0].first;
-	double mas_al_O = v_coordenadas[0].first; 
-	double mas_al_N = v_coordenadas[0].second;
-	
-	for(int i=1; i<num_ciudades; ++i){
-		if(v_coordenadas[i].second > mas_al_N){
-			mas_al_N = v_coordenadas[i].second;
-			N = i;
-		}
-		if(v_coordenadas[i].first > mas_al_E){
-			mas_al_E = v_coordenadas[i].first;
-			E = i;
-		}
-		if(v_coordenadas[i].first < mas_al_O){
-			mas_al_O = v_coordenadas[i].first;
-			O = i;
-		}
-	}
-	
-	solucion.push_back(O); candidatos[O] = -1;
-	solucion.push_back(N); candidatos[N] = -1;
-	solucion.push_back(E); candidatos[E] = -1;
-	
-	int tam_solucion = solucion.size(); //Tamanio del conjunto solucion
-	
-	//Comienzo del algoritmo
-	vector<int>::iterator sol_it, cand_it;  //Iteradores de los vectores de candidatos y solucion
-	vector<int>::iterator ciudad_origen_it; //Iterador que almacenara la posicion de la ciudad del
-	//conjunto solucion, que tiene mas cerca a una ciudad
-	//del conjuno candidatos    
-	
-	while(tam_solucion < num_ciudades){ //Mientras que no hayamos recorrido todas las ciudades
-		//Buscamos la ciudad mas cercana al conjunto solucion
-		int ciudad_mas_cercana = 0;
-		double distancia_mas_cercana = INF;
-		
-		for(sol_it=solucion.begin(); sol_it!=solucion.end(); ++sol_it){
-			for (cand_it=candidatos.begin(); cand_it!=candidatos.end(); ++cand_it){
-				if ((distancias[*sol_it][*cand_it] < distancia_mas_cercana) && (*cand_it != -1)){
-					ciudad_origen_it = sol_it;
-					ciudad_mas_cercana = *cand_it;
-					distancia_mas_cercana = distancias[*sol_it][*cand_it];
-				}
+	for(sol_it=solucion.begin(); sol_it!=solucion.end(); ++sol_it){
+		for (cand_it=candidatos.begin(); cand_it!=candidatos.end(); ++cand_it){
+			if ((distancias[*sol_it][*cand_it] < distancia_mas_cercana) && (*cand_it != -1)){
+				ciudad_origen_it = sol_it;
+				ciudad_mas_cercana = *cand_it;
+				distancia_mas_cercana = distancias[*sol_it][*cand_it];
 			}
 		}
-		
-		//Una vez encontrada vemos en que posicion del conjunto solucion insertarla para minimizar el trayecto
-		vector<int>::iterator ciudad_siguiente_it = ciudad_origen_it;
-		vector<int>::iterator ciudad_anterior_it = ciudad_origen_it;
-		vector<int>::iterator final_it = solucion.end();
-		final_it--;
-		
-		//Puesto que el recorrido es un ciclo (cerrado) hay que contemplar el caso de que la
-		//ciudad a insertar sea adyacente al primer o ultimo elemento del conjunto solucion
-		if(ciudad_origen_it == solucion.begin()){
-			++ciudad_siguiente_it;
-			ciudad_anterior_it = final_it;
-		}
-		else if(ciudad_origen_it == final_it){
-			ciudad_siguiente_it = solucion.begin();
-			--ciudad_anterior_it;
-		}
-		else{
-			++ciudad_siguiente_it;
-			--ciudad_anterior_it;
-		}
-		
-		
-		if(distancias[ciudad_mas_cercana][*ciudad_anterior_it] < distancias[ciudad_mas_cercana][*ciudad_siguiente_it]){
-			solucion.insert(ciudad_origen_it, ciudad_mas_cercana);
-		}
-		else{
-			solucion.insert(ciudad_siguiente_it, ciudad_mas_cercana);
-		}
-		
-		candidatos[ciudad_mas_cercana] = -1;
-		tam_solucion++;
 	}
 	
-	//Insertamos de nuevo el primer elemento del conjunto solucion
-	// ya que es un caamino cerrado
-	solucion.push_back(*solucion.begin());
+	//Una vez encontrada vemos en que posicion del conjunto solucion insertarla para minimizar el trayecto
+	vector<int>::iterator ciudad_siguiente_it = ciudad_origen_it;
+	vector<int>::iterator ciudad_anterior_it = ciudad_origen_it;
+	vector<int>::iterator final_it = solucion.end();
+	final_it--;
 	
-	//Mostramos la solucion
-	cout << "Solucion: " << endl;
-	
-	for(int i=0; i<tam_solucion; ++i){
-		cout << solucion[i]+1 << " ";
+	//Puesto que el recorrido es un ciclo (cerrado) hay que contemplar el caso de que la
+	//ciudad a insertar sea adyacente al primer o ultimo elemento del conjunto solucion
+	if(ciudad_origen_it == solucion.begin()){
+		++ciudad_siguiente_it;
+		ciudad_anterior_it = final_it;
 	}
-	cout << endl;
-	
-	//Calculo de la distancia total recorrida
-	double distancia_recorrida = 0.00;
-	for(int i=0; i<tam_solucion-1; ++i){
-		distancia_recorrida += distancias[i][i+1];
+	else if(ciudad_origen_it == final_it){
+		ciudad_siguiente_it = solucion.begin();
+		--ciudad_anterior_it;
 	}
-	
-	cout << "Distancia total recorrida: " << distancia_recorrida << endl;
-	
-	//Salida de la solucion a fichero
-	ofstream output_file("data/ulysses16_insercion.txt");
-	for(int i=0; i<num_ciudades; ++i){
-		int c = solucion[i];
-		output_file << c+1 << " " << v_coordenadas[c].first << " " << v_coordenadas[c].second << endl;
+	else{
+		++ciudad_siguiente_it;
+		--ciudad_anterior_it;
 	}
 	
-	return (0);
+	
+	if(distancias[ciudad_mas_cercana][*ciudad_anterior_it] < distancias[ciudad_mas_cercana][*ciudad_siguiente_it]){
+		solucion.insert(ciudad_origen_it, ciudad_mas_cercana);
+	}
+	else{
+		solucion.insert(ciudad_siguiente_it, ciudad_mas_cercana);
+	}
+	
+	candidatos[ciudad_mas_cercana] = -1;
+	tam_solucion++;
 }
+
+//Insertamos de nuevo el primer elemento del conjunto solucion
+// ya que es un caamino cerrado
+solucion.push_back(*solucion.begin());
+
+//Mostramos la solucion
+cout << "Solucion: " << endl;
+
+for(int i=0; i<tam_solucion; ++i){
+	cout << solucion[i]+1 << " ";
+}
+cout << endl;
 \end{lstlisting}
 
 \subsubsection{Pseudocódigo}
@@ -536,6 +343,7 @@ Repetir
 	Eliminar U de V
 	Insertar U en S
 Hasta que |S| = N
+Insertar de nuevo en S la primera ciudad que habiamos insertado al principio
 Devolver S
 \end{lstlisting}
 
@@ -573,150 +381,37 @@ Fijándonos en el pseudocódigo, vemos que la búsqueda de la ciudad del conjunt
 
 \newpage
 \subsection{Algoritmo con otra estrategia}
-A continuación, se ha implantado una estrategia nueva para resolver este algoritmo.
+A continuación, se ha implantado una estrategia nueva basada en las aristas para resolver este algoritmo.
 
 \subsubsection{Código del programa}
+Aquí se muestra la parte del código del programa desarrollado en C++ que contiene el algoritmo principal utilizado.
+
 \begin{lstlisting}[style=C++]
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <utility>
-#include <cmath>
-#include <limits>
-#include <set>
-#include "matriz.h"
-
-using namespace std;
-
-double Distancia(const pair<double,double> & posicion_A, const pair<double,double> &posicion_B){
-	double distancia = sqrt(pow(posicion_A.first - posicion_B.first,2) + pow(posicion_A.second-posicion_B.second,2));
-	
-	return distancia;
+//Ordenamos las aristas del grafo de menor a mayor
+for(int i=0; i<num_ciudades; ++i){
+	for (int j=i+1; j<num_ciudades; ++j){
+		Arista a{i, j, Distancia(v_coordenadas[i], v_coordenadas[j])};
+		aristas.insert(a);
+	}
 }
 
-/**
-* @brief Estructura que representa una arista del grafo
-* @param a Una ciudad del grafo
-* @param b Otra ciudad del grafo
-* @param distancia Distancia entre la ciudad a y b
-*/
-struct Arista{
-	int a;
-	int b;
-	double distancia;
-};
+//Vector con el grado de cada nodo del grafo solucion
+vector<int> grado(num_ciudades);
+grado.insert(grado.begin(), num_ciudades, 0);
 
-struct aristaComparator{
-	bool operator ()(const Arista arista1, const Arista arista2) const{
-		if (arista1.distancia < arista2.distancia)
-			return true;
-		else 
-			return false;
-	}
-};
+//Generamos vector de candidatos
+for(int i=0; i<num_ciudades; ++i)
+	candidatos.push_back(i);
 
-/**
-* Este programa busca un ciclo que recorra todas las ciudades de 
-* un mapa mediante un algoritmo de tipo greedy. En esta version
-* del algoritmo, dado un recorrido inicial que contiene tres nodos
-* en cada paso se busca el nodo mas cercano al conjunto solucion que
-* se encuentre en el conjunto de candidatos. El nodo mas cercano es
-* insertado en la posicion del vector que menos aumente el recorrido.
-*/
-int main(int argc, char **argv){
-	const double INF = numeric_limits<double>::max();
-	
-	if(argc < 2){
-		cout << "ERROR. Faltan argumentos [archivo de datos]" << endl;
-		exit(-1);
-	}
-	
-	ifstream input_file(argv[1]);
-	string line;
-	int num_ciudades;
-	
-	int ciudad;
-	double coor_x, coor_y;
-	vector<pair<double, double> > v_coordenadas;
-	pair<double, double> coordenadas;
-	
-	vector<int> candidatos;
-	vector<int> solucion;
-	
-	//Movemos el offset a la linea en la que se dice la dimension del grafo
-	for(int i=0; i<3; ++i){
-		getline(input_file, line);
-	}
-	
-	getline(input_file, line);
-	line.erase(0, 11);
-	num_ciudades = atoi(line.c_str());
-	
-	//Reservamos espacio para el grafo
-	matriz <double> distancias(num_ciudades, num_ciudades, 0);
-	set <Arista, aristaComparator> aristas;
-	
-	//Movemos el offset al comienzo de los datos
-	for(int i=0; i<3; ++i){
-		getline(input_file, line);
-	}
-	
-	//Tomamos los datos
-	for (int i=0; i<num_ciudades; ++i){
-		input_file >> ciudad;
-		input_file >> coor_x;
-		input_file >> coor_y;
-		coordenadas.first = coor_x;
-		coordenadas.second = coor_y;
-		v_coordenadas.push_back(coordenadas);
-	}
-	
-	//Ordenamos las aristas del grafo de menor a mayor
-	for(int i=0; i<num_ciudades; ++i){
-		for (int j=i+1; j<num_ciudades; ++j){
-			Arista a{i, j, Distancia(v_coordenadas[i], v_coordenadas[j])};
-			aristas.insert(a);
-		}
-	}
-	
-	//Vector con el grado de cada nodo del grafo solucion
-	vector<int> grado(num_ciudades);
-	grado.insert(grado.begin(), num_ciudades, 0);
-	
-	
-	
-	//Generamos vector de candidatos
-	for(int i=0; i<num_ciudades; ++i)
-		candidatos.push_back(i);
-	
-	int tam_solucion = solucion.size(); //Tamanio del conjunto solucion
-	
-	//Mostramos la solucion
-	cout << "Solucion: " << endl;
-	
-	for(int i=0; i<tam_solucion; ++i){
-		cout << solucion[i]+1 << " ";
-	}
-	cout << endl;
-	
-	//Calculo de la distancia total recorrida
-	double distancia_recorrida = 0.00;
-	for(int i=0; i<tam_solucion-1; ++i){
-		distancia_recorrida += distancias[i][i+1];
-	}
-	
-	cout << "Distancia total recorrida: " << distancia_recorrida << endl;
-	
-	//Salida de la solucion a fichero
-	ofstream output_file("data/ulysses16_aristas.txt");
-	for(int i=0; i<tam_solucion; ++i){
-		int c = solucion[i];
-		output_file << c+1 << " " << v_coordenadas[c].first << " " << v_coordenadas[c].second << endl;
-	}
-	
-	return (0);
+int tam_solucion = solucion.size(); //Tamanio del conjunto solucion
+
+//Mostramos la solucion
+cout << "Solucion: " << endl;
+
+for(int i=0; i<tam_solucion; ++i){
+	cout << solucion[i]+1 << " ";
 }
+cout << endl;
 \end{lstlisting}
 
 \subsubsection{Pseudocódigo}
@@ -754,29 +449,9 @@ En el caso de que el índice devuelto de la función sea -1 significa que hemos 
 Si el algoritmo finaliza sin mensaje de error significa que se ha conseguido llegar a la ciudad objetivo.\\
 
 \subsubsection{Código del programa}
+Aquí se muestra la parte del código del programa desarrollado en C++ que contiene el algoritmo principal utilizado.
+
 \begin{lstlisting}[style=C++]
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <utility>
-#include <cmath>
-#include <limits>
-#include "matriz.h"
-#include <iomanip>
-
-using namespace std;
-const double INF = numeric_limits<double>::max();
-
-
-double Distancia(const pair<double,double> & posicion_A, const pair<double,double> &posicion_B){
-
-	double distancia = sqrt(pow(posicion_A.first - posicion_B.first,2) + pow(posicion_A.second-posicion_B.second,2));
-	
-	return distancia;
-}
-
-//TODO
 int BuscarGasolinera(const int autonomia,const int pos_actual, const int ciudad_destino, matriz<double> & grafo,  vector<int> &candidatos){
 
 	int parada = -1;
@@ -794,113 +469,45 @@ int BuscarGasolinera(const int autonomia,const int pos_actual, const int ciudad_
 	
 	return(parada);
 }
+\end{lstlisting}
+\begin{lstlisting}[style=C++]
+vector<int> candidatos;
+vector<int> solucion;
+solucion.push_back(ciudad_origen);
 
-int main(int argc, char **argv){
+for(int i = 0; i< num_ciudades; i++)
+	candidatos.push_back(i);
 
-	string line;
-	int num_ciudades;
-	
-	if(argc<5){
-		cout << "Faltan argumentos:\n" "./gasolineras [archivo] [autonomia] [ciudad origen] [ciudad destino]" << endl;
+candidatos[ciudad_origen] = -1;
+bool fin = false;
+pos_actual = ciudad_origen;
+
+
+while(fin == false){
+	if(autonomia >= distancias[pos_actual][ciudad_destino]){
+		cout << "FIN = DESTINO" <<  endl;
+		solucion.push_back(ciudad_destino);
+		fin = true;
 	}
+
+	else{
+		pos_actual = BuscarGasolinera(autonomia,pos_actual, ciudad_destino, distancias, candidatos);
 	
-	ifstream input_file(argv[1]);
-	double autonomia = atoi(argv[2]);
-	int ciudad_origen = atoi(argv[3]) - 1;
-	int ciudad_destino = atoi(argv[4]) - 1;
-	int pos_actual = ciudad_origen;
-	
-	//Variables que usaremos para crear la matriz de distancias (grafo)
-	int ciudad;
-	double coor_x, coor_y;
-	vector<pair<double, double> > v_coordenadas;
-	pair<double, double> p;
-	
-	//Movemos el offset a la linea en la que se dice la dimension del grafo
-	for(int i=0; i<3; ++i){
-		getline(input_file, line);
-	}
-	
-	getline(input_file, line);
-	line.erase(0, 11);
-	num_ciudades = atoi(line.c_str());
-	
-	//Reservamos espacio para el grafo
-	matriz<double> distancias(num_ciudades, num_ciudades, 0);
-	
-	
-	//Movemos el offset al comienzo de los datos
-	for(int i=0; i<3; ++i){
-		getline(input_file, line);
-	}
-	
-	//Tomamos los datos
-	for (int i=0; i<num_ciudades; ++i){
-		input_file >> ciudad;
-		input_file >> coor_x;
-		input_file >> coor_y;
-		p.first = coor_x;
-		p.second = coor_y;
-		v_coordenadas.push_back(p);
-	}
-	
-	//Calculamos las distancias y las metemos en la matriz que representa
-	//el grafo
-	for(int i=0; i<num_ciudades; ++i){
-		for (int j=i+1; j<num_ciudades; ++j){
-			distancias[i][j]=Distancia(v_coordenadas[i], v_coordenadas[j]);
-			distancias[j][i]=distancias[i][j];
+		if(pos_actual != -1){
+			candidatos[pos_actual] = -1;
+			solucion.push_back(pos_actual);
 		}
-	}
-	
-	//Comienzo del algoritmo
-	vector<int> candidatos;
-	vector<int> solucion;
-	solucion.push_back(ciudad_origen);
-	
-	for(int i = 0; i< num_ciudades; i++)
-		candidatos.push_back(i);
-	
-	candidatos[ciudad_origen] = -1;
-	bool fin = false;
-	pos_actual = ciudad_origen;
-	
-	
-	while(fin == false){
-		if(autonomia >= distancias[pos_actual][ciudad_destino]){
-			cout << "FIN = DESTINO" <<  endl;
-			solucion.push_back(ciudad_destino);
+		else{
+			cout << "No podemos llegar a ninguna otra gasolinera" << endl;
 			fin = true;
 		}
-	
-		else{
-			pos_actual = BuscarGasolinera(autonomia,pos_actual, ciudad_destino, distancias, candidatos);
-		
-			if(pos_actual != -1){
-				candidatos[pos_actual] = -1;
-				solucion.push_back(pos_actual);
-			}
-			else{
-				cout << "No podemos llegar a ninguna otra gasolinera" << endl;
-				fin = true;
-			}
-		}
 	}
-	
-	for (int i = 0; i<solucion.size(); ++i){
-		cout << solucion[i]+1 << " --> ";
-	}
-	
-	cout << "FIN" << endl;
-	
-	ofstream ficherosalida("data/gasolineras.txt");
-	for (int i = 0; i < solucion.size(); ++i){
-		int c = solucion[i];
-		ficherosalida << c+1 << " " << v_coordenadas[c].first << " " << v_coordenadas[c].second << endl;
-	}
-	
-	return(0);
 }
+
+for (int i = 0; i<solucion.size(); ++i){
+	cout << solucion[i]+1 << " --> ";
+}
+cout << "FIN" << endl;
 \end{lstlisting}
 
 \subsubsection{Pseudocódigo}
