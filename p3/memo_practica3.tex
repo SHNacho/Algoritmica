@@ -514,6 +514,14 @@ int main(int argc, char **argv){
 \end{figure}
 
 \subsubsection{Eficiencia teórica}
+La eficiencia teórica O(n) depende del número de ciudades que hay. Tomamos, por tanto, $TAM = num\_ciudades = n$.\\
+
+La eficiencia del algoritmo, en el peor de los casos, es 
+$$T(n) = \sum_{i=1}^{n}\sum_{j=i}^{n}$$
+$$T(n) = n*(n-i)$$
+$$T(n) \in O(n^2)$$\\
+
+Para hallar esto nos debemos de fijar en el bucle que comienza en la línea 113 y analizarlo. Nos damos cuenta que el algoritmo revisa todas las ciudades para quedarse con la que aumenta el recorrido total en menor medida. Y eso lo realiza con cada ciudad nueva que se añade al bucle.
 
 
 \newpage
