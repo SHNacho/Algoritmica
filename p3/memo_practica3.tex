@@ -147,7 +147,7 @@ El procedimiento se repite hasta que todas las ciudades se hayan visitado, obten
 
 Hemos creado también una clase matriz que hemos usado de forma auxiliar para simplificar la parte del código del algoritmo que se detalla a continuación.\\
 
-
+\subsubsection{Código del programa}
 \begin{lstlisting}[style=C++]
 #include <iostream>
 #include <fstream>
@@ -317,7 +317,7 @@ Esto es debido a que la función $BuscaMenor$ es de tiempo $n$, y se ejecuta tam
 \subsection{Algoritmo basado en inserción}
 Este algoritmo greedy para resolver el problema del viajante de comercio consiste en partir de un circuito inicial. En nuestro caso las ciudades elegidas para el circuito inicial son la más al Este, la más al Oeste y la más al Norte. Una vez escogido el recorrido inicial comienza el algoritmo. Nuestro algoritmo de inserción se basa en insertar en cada iteración la ciudad que menos aumenta el tamaño de este.
 
-
+\subsubsection{Código del programa}
 \begin{lstlisting}[style=C++]
 #include <iostream>
 #include <fstream>
@@ -530,6 +530,28 @@ Donde la búsqueda de la ciudad del conjunto $V$ que menos aumenta la distancia 
 
 
 \subsubsection{Visualización}
+Empezamos seleccionando 3 ciudades distanciadas.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{data/graphics/insercion/insercion_1.pdf}
+\end{figure}
+\vspace{0,7cm}
+
+Continuamos añadiendo aquella ciudad que aumente en menor medida el recorrido total.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{data/graphics/insercion/insercion_2.pdf}
+\end{figure}
+\vspace{0,7cm}
+
+Como podemos comprobar, se añaden las ciudades en el lugar que hagan que el recorrido total sea menor.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{data/graphics/insercion/insercion_3.pdf}
+\end{figure}
+\vspace{0,7cm}
+
+Tras terminar obtenemos el recorrido final.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=13cm]{data/graphics/insercion/insercion_final.pdf}
@@ -553,7 +575,7 @@ Donde la búsqueda de la ciudad del conjunto $V$ que menos aumenta la distancia 
 \subsection{Ahorro de gasolina}
 El problema trata de partir de una ciudad y llegar a otra con un vehículo con cierta autonomía pasando por el menor número de gasolineras posibles.\\
 
-Para entender el algoritmo lo podemos imaginar gráficamente. La autonomía del coche va a ser el radio de la circunferencia de centro la primera ciudad o gasolinera en donde nos encontremos.\\
+Para entender el algoritmo lo podemos imaginar gráficamente. La autonomía del coche va a ser el radio de la circunferencia de centro la primera ciudad o gasolinera en donde nos encontremos en cada momento.\\
 
 Dentro de esa circunferencia se encontrarán las gasolineras a las que podemos llegar con la autonomía del vehículo. Solo nos queda elegir a cual de ellas. Muy facil, nos vamos a la gasolinera que este más cerca de la ciudad objetivo. \\
 
@@ -571,7 +593,7 @@ En el caso de que el índice devuelto de la función sea -1 significa que hemos 
 
 Si el algoritmo finaliza sin mensaje de error significa que se ha conseguido llegar a la ciudad objetivo.\\
 
-
+\subsubsection{Código del programa}
 \begin{lstlisting}[style=C++]
 #include <iostream>
 #include <fstream>
@@ -720,6 +742,23 @@ int main(int argc, char **argv){
 	return(0);
 }
 \end{lstlisting}
+
+\subsubsection{Pseudocódigo}
+\begin{lstlisting}
+Mientras no se llegue al destino o a un punto sin salida:
+	Encontrar gasolineras / ciudades posibles con la autonomia;
+	Si podemos ir a gasolineras o a la ciudad objetivo:
+		Si podemos ir a la ciudad objetivo:
+			FIN;
+		Si podemos ir a una o varias gasolineras:
+			Elegir la mas cercana a la ciudad objetivo;
+			Anadir al vector solucion;
+			Posicionarnos en la nueva gasolinera;
+	Si no podemir a ningun lado:
+		FIN;
+\end{lstlisting}
+
+
 
 \subsubsection{Visualización}
 \begin{figure}[H]
