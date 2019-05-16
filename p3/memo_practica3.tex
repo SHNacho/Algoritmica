@@ -367,9 +367,12 @@ Fijándonos en el pseudocódigo, vemos que la búsqueda de la ciudad del conjunt
 
 \newpage
 \subsection{Algoritmo con otra estrategia}
-A continuación, se ha implantado una estrategia nueva para resolver este algoritmo.
+A continuación, se ha implantado una estrategia nueva para resolver este algoritmo.\\
 
-El algoritmo se basa en recorrer las ciudades de más al norte a más al sur. Sería igualmente factible haciéndolo desde cualquier extremo y hasta el opuesto.
+Al principio intentamos implementar una estrategia basada en el algoritmo de Kruskal para la resolución del problema, pero no conseguimos resolver los fallos que nos surgieron antes de la entrega, por lo que decidimos realizar un algoritmo greedy más sencillo, basado en insertar en cada iteración la ciudad que se encuentra más al Norte de las no insertadas.\\
+
+
+El algoritmo se basa en recorrer las ciudades de más al norte a más al sur. Sería igualmente factible haciéndolo desde cualquier extremo y hasta el opuesto.\\
 
 \subsubsection{Código del programa}
 Aquí se muestra la parte del código del programa desarrollado en C++ que contiene el algoritmo principal utilizado.
@@ -406,6 +409,7 @@ cout << endl;
 El nuevo algoritmo que hemos creado en pseudocódigo es el siguiente:
 \begin{lstlisting}
 N = |V|
+S = {Conjunto vacio}
 Repetir
 	U = Buscar ciudad del conjunto V que esta mas al norte
 	Eliminar U de V
@@ -423,6 +427,7 @@ Aquí podemos observar un resultado de aplicar el algoritmo.
 \end{figure}
 
 \subsubsection{Eficiencia teórica}
+La búsqueda de la ciudad más al Norte es de orden $O(n)$, por lo que como se realiza $n$ veces, el algoritmo es de orden $O(n^2)$.
 
 
 \newpage
