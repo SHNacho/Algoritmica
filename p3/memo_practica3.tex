@@ -141,6 +141,13 @@ El problema se resume en encontrar un circuito hamiltoniano para una serie de pu
 
 \subsection{Algoritmo basado en cercanía}
 
+En primer lugar, hemos desarrollado una estrategia basada en encontrar el “vecino más cercano”: tomamos una ciudad inicial inicial de manera arbitraria, y buscamos en el vector de ciudades que no se han visitado la ciudad más cercana a esta. Una vez encontrada, se procede a hacer un borrado lógico de la ciudad en el vector, y se procede a encontrar la ciudad más cercana a esta última visitada.\\
+
+El procedimiento se repite hasta que todas las ciudades se hayan visitado, obteniendo el camino.\\
+
+Hemos creado también una clase matriz que hemos usado de forma auxiliar para simplificar la parte del código del algoritmo que se detalla a continuación.\\
+
+
 \begin{lstlisting}[style=C++]
 #include <iostream>
 #include <fstream>
@@ -499,7 +506,169 @@ Para entender el algoritmo lo podemos imaginar gráficamente. La autonomía del 
 
 Dentro de esa circunferencia se encontrarán las gasolineras a las que podemos llegar con la autonomía del vehículo. Solo nos queda elegir a cual de ellas. Muy facil, nos vamos a la gasolinera que este más cerca de la ciudad objetivo. \\
 
-Así nos vamos moviendo de gasolinera en gasolinera hasta que dentro de nuestra circunferencia se encuentre a la ciudad objetivo.
+Así nos vamos moviendo de gasolinera en gasolinera hasta que dentro de nuestra circunferencia se encuentre a la ciudad objetivo.\\
+
+En el desarrollo de este algoritmo nos encontramos un error en tiempo de ejecución de violación de segmento. Esto se debía a que no hacíamos un clear del vector que contenía las distancias desde la posición actual hasta el resto de gasolineras.\\
+
+En el código, más concretamente en la funcion “BuscarGasolinera“,recopilamos las ciudades que están dentro de la circunferencia en el vector de “indices\_posibles\_gasolineras” en donde guardamos los índices de las gasolineras.\\
+
+Después de recopilarlas, buscamos en él, el índice de la gasolinera que minimiza la distancia a la ciudad objetivo y guardamos el índice de aquella que cumple el criterio de optimalidad.\\
+
+La función devuelve el índice que será añadido al vector solución y borrado de manera lógica del vector de candidatos.\\
+
+En el caso de que el índice devuelto de la función sea -1 significa que hemos llegado a un punto en el que desde la gasolinera que nos encontramos no podemos ir a ninguna otra con la autonomía dada. Para indicarlo se muestra un mensaje de error y finaliza el algoritmo.\\
+
+Si el algoritmo finaliza sin mensaje de error significa que se ha conseguido llegar a la ciudad objetivo.\\
+
+
+\begin{lstlisting}[style=C++]
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <utility>
+#include <cmath>
+#include <limits>
+#include "matriz.h"
+#include <iomanip>
+
+using namespace std;
+const double INF = numeric_limits<double>::max();
+
+
+double Distancia(const pair<double,double> & posicion_A, const pair<double,double> &posicion_B){
+
+	double distancia = sqrt(pow(posicion_A.first - posicion_B.first,2) + pow(posicion_A.second-posicion_B.second,2));
+	
+	return distancia;
+}
+
+//TODO
+int BuscarGasolinera(const int autonomia,const int pos_actual, const int ciudad_destino, matriz<double> & grafo,  vector<int> &candidatos){
+
+	int parada = -1;
+	vector<int> indices_posibles_gasolineras;
+	double minimo = INF;
+	
+	for (int i = 0 ;i <candidatos.size();++i){
+		double distancia_actual_candidato = grafo[pos_actual][i];
+		double distancia_candidato_destino = grafo[i][ciudad_destino];
+		if((distancia_actual_candidato <= autonomia) && (candidatos[i] != -1) && (distancia_candidato_destino < minimo)){
+			parada = i;
+			minimo = distancia_candidato_destino;
+		}
+	}
+	
+	return(parada);
+}
+
+int main(int argc, char **argv){
+
+	string line;
+	int num_ciudades;
+	
+	if(argc<5){
+		cout << "Faltan argumentos:\n" "./gasolineras [archivo] [autonomia] [ciudad origen] [ciudad destino]" << endl;
+	}
+	
+	ifstream input_file(argv[1]);
+	double autonomia = atoi(argv[2]);
+	int ciudad_origen = atoi(argv[3]) - 1;
+	int ciudad_destino = atoi(argv[4]) - 1;
+	int pos_actual = ciudad_origen;
+	
+	//Variables que usaremos para crear la matriz de distancias (grafo)
+	int ciudad;
+	double coor_x, coor_y;
+	vector<pair<double, double> > v_coordenadas;
+	pair<double, double> p;
+	
+	//Movemos el offset a la linea en la que se dice la dimension del grafo
+	for(int i=0; i<3; ++i){
+		getline(input_file, line);
+	}
+	
+	getline(input_file, line);
+	line.erase(0, 11);
+	num_ciudades = atoi(line.c_str());
+	
+	//Reservamos espacio para el grafo
+	matriz<double> distancias(num_ciudades, num_ciudades, 0);
+	
+	
+	//Movemos el offset al comienzo de los datos
+	for(int i=0; i<3; ++i){
+		getline(input_file, line);
+	}
+	
+	//Tomamos los datos
+	for (int i=0; i<num_ciudades; ++i){
+		input_file >> ciudad;
+		input_file >> coor_x;
+		input_file >> coor_y;
+		p.first = coor_x;
+		p.second = coor_y;
+		v_coordenadas.push_back(p);
+	}
+	
+	//Calculamos las distancias y las metemos en la matriz que representa
+	//el grafo
+	for(int i=0; i<num_ciudades; ++i){
+		for (int j=i+1; j<num_ciudades; ++j){
+			distancias[i][j]=Distancia(v_coordenadas[i], v_coordenadas[j]);
+			distancias[j][i]=distancias[i][j];
+		}
+	}
+	
+	//Comienzo del algoritmo
+	vector<int> candidatos;
+	vector<int> solucion;
+	solucion.push_back(ciudad_origen);
+	
+	for(int i = 0; i< num_ciudades; i++)
+		candidatos.push_back(i);
+	
+	candidatos[ciudad_origen] = -1;
+	bool fin = false;
+	pos_actual = ciudad_origen;
+	
+	
+	while(fin == false){
+		if(autonomia >= distancias[pos_actual][ciudad_destino]){
+			cout << "FIN = DESTINO" <<  endl;
+			solucion.push_back(ciudad_destino);
+			fin = true;
+		}
+	
+		else{
+			pos_actual = BuscarGasolinera(autonomia,pos_actual, ciudad_destino, distancias, candidatos);
+		
+			if(pos_actual != -1){
+				candidatos[pos_actual] = -1;
+				solucion.push_back(pos_actual);
+			}
+			else{
+				cout << "No podemos llegar a ninguna otra gasolinera" << endl;
+				fin = true;
+			}
+		}
+	}
+	
+	for (int i = 0; i<solucion.size(); ++i){
+		cout << solucion[i]+1 << " --> ";
+	}
+	
+	cout << "FIN" << endl;
+	
+	ofstream ficherosalida("data/gasolineras.txt");
+	for (int i = 0; i < solucion.size(); ++i){
+		int c = solucion[i];
+		ficherosalida << c+1 << " " << v_coordenadas[c].first << " " << v_coordenadas[c].second << endl;
+	}
+	
+	return(0);
+}
+\end{lstlisting}
 
 
 %----------------------------------------------------------------------------------------
