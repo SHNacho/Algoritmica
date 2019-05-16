@@ -2,6 +2,7 @@ BIN=./bin
 SRC=./src
 OBJ=./obj
 INC=./include
+DAT=./data
 CXX = -std=gnu++0x -g -I$(INC)
 
 all: clean build
@@ -37,7 +38,7 @@ $(OBJ)/matriz.o: $(SRC)/matriz.cpp
 
 
 clean:
-	rm -rf $(BIN)/* $(OBJ)/* tsp.zip
+	rm -rf $(BIN)/* $(OBJ)/* $(DAT)/output/* practica3.zip 
 	
 zip: clean
 	zip -r practica3.zip bin include makefile obj src data memo_practica3.pdf
