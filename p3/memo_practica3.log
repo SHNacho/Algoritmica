@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.5.10)  16 MAY 2019 22:19
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.5.10)  16 MAY 2019 22:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1202,249 +1202,273 @@ Underfull \hbox (badness 10000) in paragraph at lines 435--436
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 437--438
+
+ []
+
+<data/graphics/comparacion/cercania.png, id=117, 1130.2225pt x 1694.33pt>
+File: data/graphics/comparacion/cercania.png Graphic file (type png)
+<use data/graphics/comparacion/cercania.png>
+Package pdftex.def Info: data/graphics/comparacion/cercania.png  used on input 
+line 442.
+(pdftex.def)             Requested size: 128.0374pt x 191.93535pt.
+<data/graphics/comparacion/insercion.png, id=118, 1130.2225pt x 1694.33pt>
+File: data/graphics/comparacion/insercion.png Graphic file (type png)
+<use data/graphics/comparacion/insercion.png>
+Package pdftex.def Info: data/graphics/comparacion/insercion.png  used on input
+ line 443.
+(pdftex.def)             Requested size: 128.0374pt x 191.93535pt.
+<data/graphics/comparacion/otro.png, id=119, 2048.65375pt x 2562.57375pt>
+File: data/graphics/comparacion/otro.png Graphic file (type png)
+<use data/graphics/comparacion/otro.png>
+Package pdftex.def Info: data/graphics/comparacion/otro.png  used on input line
+ 444.
+(pdftex.def)             Requested size: 152.22241pt x 190.38606pt.
 File: ../logo.png Graphic file (type png)
 <use ../logo.png>
-Package pdftex.def Info: ../logo.png  used on input line 441.
+Package pdftex.def Info: ../logo.png  used on input line 450.
 (pdftex.def)             Requested size: 153.31023pt x 42.67912pt.
-[12]
-Underfull \hbox (badness 10000) in paragraph at lines 444--445
+[12 <./data/graphics/comparacion/cercania.png> <./data/graphics/comparacion/ins
+ercion.png> <./data/graphics/comparacion/otro.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 453--454
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 446--447
+Underfull \hbox (badness 10000) in paragraph at lines 455--456
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 448--449
+Underfull \hbox (badness 10000) in paragraph at lines 457--458
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 450--451
+Underfull \hbox (badness 10000) in paragraph at lines 459--460
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 452--453
+Underfull \hbox (badness 10000) in paragraph at lines 461--462
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 454--455
+Underfull \hbox (badness 10000) in paragraph at lines 463--464
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 456--457
+Underfull \hbox (badness 10000) in paragraph at lines 465--466
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 458--459
+Underfull \hbox (badness 10000) in paragraph at lines 467--468
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 460--461
+Underfull \hbox (badness 10000) in paragraph at lines 469--470
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 462--463
+Underfull \hbox (badness 10000) in paragraph at lines 471--472
 
  []
 
 Package marginnote Info: Margin note 13.1 is on absolute page 13
-(marginnote)              on input line 468.
-Package marginnote Info: right page because not two side mode on input line 468
+(marginnote)              on input line 477.
+Package marginnote Info: right page because not two side mode on input line 477
 .
 Package marginnote Info: xpos seems to be 36.98866pt,
-(marginnote)             \marginnoterightadjust ignored on input line 468.
+(marginnote)             \marginnoterightadjust ignored on input line 477.
 
-Package xcolor Warning: Incompatible color definition on input line 468.
-
-
-Package xcolor Warning: Incompatible color definition on input line 468.
+Package xcolor Warning: Incompatible color definition on input line 477.
 
 
-Package xcolor Warning: Incompatible color definition on input line 468.
+Package xcolor Warning: Incompatible color definition on input line 477.
 
 
-Package xcolor Warning: Incompatible color definition on input line 468.
+Package xcolor Warning: Incompatible color definition on input line 477.
 
 
-Package xcolor Warning: Incompatible color definition on input line 468.
+Package xcolor Warning: Incompatible color definition on input line 477.
 
 
-Package xcolor Warning: Incompatible color definition on input line 468.
+Package xcolor Warning: Incompatible color definition on input line 477.
 
 
-Package xcolor Warning: Incompatible color definition on input line 468.
+Package xcolor Warning: Incompatible color definition on input line 477.
 
 
-Package xcolor Warning: Incompatible color definition on input line 468.
+Package xcolor Warning: Incompatible color definition on input line 477.
 
 
-Package xcolor Warning: Incompatible color definition on input line 468.
+Package xcolor Warning: Incompatible color definition on input line 477.
 
 
-Package xcolor Warning: Incompatible color definition on input line 468.
+Package xcolor Warning: Incompatible color definition on input line 477.
+
+
+Package xcolor Warning: Incompatible color definition on input line 477.
 
 File: ../logo.png Graphic file (type png)
 <use ../logo.png>
-Package pdftex.def Info: ../logo.png  used on input line 473.
+Package pdftex.def Info: ../logo.png  used on input line 482.
 (pdftex.def)             Requested size: 153.31023pt x 42.67912pt.
 [13]
 
-Package xcolor Warning: Incompatible color definition on input line 486.
+Package xcolor Warning: Incompatible color definition on input line 495.
 
 
-Package xcolor Warning: Incompatible color definition on input line 486.
+Package xcolor Warning: Incompatible color definition on input line 495.
 
 
-Package xcolor Warning: Incompatible color definition on input line 486.
+Package xcolor Warning: Incompatible color definition on input line 495.
 
 
-Package xcolor Warning: Incompatible color definition on input line 486.
+Package xcolor Warning: Incompatible color definition on input line 495.
 
 
-Package xcolor Warning: Incompatible color definition on input line 486.
+Package xcolor Warning: Incompatible color definition on input line 495.
 
 
-Package xcolor Warning: Incompatible color definition on input line 486.
+Package xcolor Warning: Incompatible color definition on input line 495.
 
 Package marginnote Info: Margin note 14.1 is on absolute page 14
-(marginnote)              on input line 489.
-Package marginnote Info: right page because not two side mode on input line 489
+(marginnote)              on input line 498.
+Package marginnote Info: right page because not two side mode on input line 498
 .
 Package marginnote Info: xpos seems to be 36.98866pt,
-(marginnote)             \marginnoterightadjust ignored on input line 489.
+(marginnote)             \marginnoterightadjust ignored on input line 498.
 
-Package xcolor Warning: Incompatible color definition on input line 489.
-
-
-Package xcolor Warning: Incompatible color definition on input line 489.
+Package xcolor Warning: Incompatible color definition on input line 498.
 
 
-Package xcolor Warning: Incompatible color definition on input line 489.
+Package xcolor Warning: Incompatible color definition on input line 498.
 
 
-Package xcolor Warning: Incompatible color definition on input line 489.
+Package xcolor Warning: Incompatible color definition on input line 498.
 
 
-Package xcolor Warning: Incompatible color definition on input line 489.
+Package xcolor Warning: Incompatible color definition on input line 498.
 
 
-Package xcolor Warning: Incompatible color definition on input line 489.
+Package xcolor Warning: Incompatible color definition on input line 498.
 
 
-Package xcolor Warning: Incompatible color definition on input line 489.
+Package xcolor Warning: Incompatible color definition on input line 498.
 
 
-Package xcolor Warning: Incompatible color definition on input line 489.
+Package xcolor Warning: Incompatible color definition on input line 498.
 
 
-Package xcolor Warning: Incompatible color definition on input line 489.
+Package xcolor Warning: Incompatible color definition on input line 498.
 
 
-Package xcolor Warning: Incompatible color definition on input line 489.
+Package xcolor Warning: Incompatible color definition on input line 498.
+
+
+Package xcolor Warning: Incompatible color definition on input line 498.
 
 File: ../logo.png Graphic file (type png)
 <use ../logo.png>
-Package pdftex.def Info: ../logo.png  used on input line 518.
+Package pdftex.def Info: ../logo.png  used on input line 527.
 (pdftex.def)             Requested size: 153.31023pt x 42.67912pt.
 [14]
 
-Package xcolor Warning: Incompatible color definition on input line 527.
+Package xcolor Warning: Incompatible color definition on input line 536.
 
 
-Package xcolor Warning: Incompatible color definition on input line 527.
+Package xcolor Warning: Incompatible color definition on input line 536.
 
 
-Package xcolor Warning: Incompatible color definition on input line 527.
+Package xcolor Warning: Incompatible color definition on input line 536.
 
 
-Package xcolor Warning: Incompatible color definition on input line 527.
+Package xcolor Warning: Incompatible color definition on input line 536.
 
 
-Package xcolor Warning: Incompatible color definition on input line 527.
+Package xcolor Warning: Incompatible color definition on input line 536.
 
 
-Package xcolor Warning: Incompatible color definition on input line 527.
+Package xcolor Warning: Incompatible color definition on input line 536.
 
 Package marginnote Info: Margin note 15.1 is on absolute page 15
-(marginnote)              on input line 532.
-Package marginnote Info: right page because not two side mode on input line 532
+(marginnote)              on input line 541.
+Package marginnote Info: right page because not two side mode on input line 541
 .
 Package marginnote Info: xpos seems to be 36.98866pt,
-(marginnote)             \marginnoterightadjust ignored on input line 532.
+(marginnote)             \marginnoterightadjust ignored on input line 541.
 
-Package xcolor Warning: Incompatible color definition on input line 532.
-
-
-Package xcolor Warning: Incompatible color definition on input line 532.
+Package xcolor Warning: Incompatible color definition on input line 541.
 
 
-Package xcolor Warning: Incompatible color definition on input line 532.
+Package xcolor Warning: Incompatible color definition on input line 541.
 
 
-Package xcolor Warning: Incompatible color definition on input line 532.
+Package xcolor Warning: Incompatible color definition on input line 541.
 
 
-Package xcolor Warning: Incompatible color definition on input line 532.
+Package xcolor Warning: Incompatible color definition on input line 541.
 
 
-Package xcolor Warning: Incompatible color definition on input line 532.
+Package xcolor Warning: Incompatible color definition on input line 541.
 
 
-Package xcolor Warning: Incompatible color definition on input line 532.
+Package xcolor Warning: Incompatible color definition on input line 541.
 
 
-Package xcolor Warning: Incompatible color definition on input line 532.
+Package xcolor Warning: Incompatible color definition on input line 541.
 
 
-Package xcolor Warning: Incompatible color definition on input line 532.
+Package xcolor Warning: Incompatible color definition on input line 541.
 
 
-Package xcolor Warning: Incompatible color definition on input line 532.
+Package xcolor Warning: Incompatible color definition on input line 541.
 
 
-Package xcolor Warning: Incompatible color definition on input line 544.
+Package xcolor Warning: Incompatible color definition on input line 541.
 
 
-Package xcolor Warning: Incompatible color definition on input line 544.
+Package xcolor Warning: Incompatible color definition on input line 553.
 
 
-Package xcolor Warning: Incompatible color definition on input line 544.
+Package xcolor Warning: Incompatible color definition on input line 553.
 
 
-Package xcolor Warning: Incompatible color definition on input line 544.
+Package xcolor Warning: Incompatible color definition on input line 553.
 
 
-Package xcolor Warning: Incompatible color definition on input line 544.
+Package xcolor Warning: Incompatible color definition on input line 553.
 
 
-Package xcolor Warning: Incompatible color definition on input line 544.
+Package xcolor Warning: Incompatible color definition on input line 553.
 
-<data/graphics/gasolineras/gasolineras.pdf, id=127, 642.4pt x 481.8pt>
+
+Package xcolor Warning: Incompatible color definition on input line 553.
+
+<data/graphics/gasolineras/gasolineras.pdf, id=130, 642.4pt x 481.8pt>
 File: data/graphics/gasolineras/gasolineras.pdf Graphic file (type pdf)
 <use data/graphics/gasolineras/gasolineras.pdf>
 Package pdftex.def Info: data/graphics/gasolineras/gasolineras.pdf  used on inp
-ut line 551.
+ut line 560.
 (pdftex.def)             Requested size: 369.88582pt x 277.42249pt.
 File: ../logo.png Graphic file (type png)
 <use ../logo.png>
-Package pdftex.def Info: ../logo.png  used on input line 553.
+Package pdftex.def Info: ../logo.png  used on input line 562.
 (pdftex.def)             Requested size: 153.31023pt x 42.67912pt.
 [15]
-Underfull \hbox (badness 10000) in paragraph at lines 555--556
+Underfull \hbox (badness 10000) in paragraph at lines 564--565
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 560--561
+Underfull \hbox (badness 10000) in paragraph at lines 569--570
 
  []
 
@@ -1452,17 +1476,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 560--561
 AED: lastpage setting LastPage
 File: ../logo.png Graphic file (type png)
 <use ../logo.png>
-Package pdftex.def Info: ../logo.png  used on input line 569.
+Package pdftex.def Info: ../logo.png  used on input line 578.
 (pdftex.def)             Requested size: 153.31023pt x 42.67912pt.
 [16 <./data/graphics/gasolineras/gasolineras.pdf>] (./memo_practica3.aux
 LaTeX Info: Redefining \. on input line 6.
 LaTeX Info: Redefining \% on input line 6.
 ) ) 
 Here is how much of TeX's memory you used:
- 7173 strings out of 492982
- 94584 string characters out of 6134896
+ 7187 strings out of 492982
+ 95132 string characters out of 6134896
  341732 words of memory out of 5000000
- 10590 multiletter control sequences out of 15000+600000
+ 10602 multiletter control sequences out of 15000+600000
  10629 words of font info for 40 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  41i,22n,58p,467b,1971s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1478,10 +1502,10 @@ amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
 ti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.p
 fb>
-Output written on memo_practica3.pdf (16 pages, 341698 bytes).
+Output written on memo_practica3.pdf (16 pages, 554000 bytes).
 PDF statistics:
- 185 PDF objects out of 1000 (max. 8388607)
+ 188 PDF objects out of 1000 (max. 8388607)
  123 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 56 words of extra memory for PDF output out of 10000 (max. 10000000)
 
