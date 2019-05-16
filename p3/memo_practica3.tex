@@ -315,6 +315,9 @@ Esto es debido a que la función $BuscaMenor$ es de tiempo $n$, y se ejecuta tam
 
 \newpage
 \subsection{Algoritmo basado en inserción}
+Este algoritmo greedy para resolver el problema del viajante de comercio consiste en partir de un circuito inicial. En nuestro caso las ciudades elegidas para el circuito inicial son la más al Este, la más al Oeste y la más al Norte. Una vez escogido el recorrido inicial comienza el algoritmo. Nuestro algoritmo de inserción se basa en insertar en cada iteración la ciudad que menos aumenta el tamaño de este.
+
+
 \begin{lstlisting}[style=C++]
 #include <iostream>
 #include <fstream>
@@ -507,21 +510,30 @@ int main(int argc, char **argv){
 }
 \end{lstlisting}
 
+\subsubsection{Pseudocódigo}
+El algoritmo por inserción en pseudocódigo es el siguiente:
+\begin{lstlisting}
+N = |V|
+S = {ciudad mas al Norte, 
+	ciudad mas al Este, 
+	ciudad mas al Oeste}
+Repetir
+U = Buscar ciudad del conjunto V que menos aumenta la distancia de S
+Eliminar U de V
+Insertar U en S
+Hasta que |T| = N
+Devolver T
+\end{lstlisting}
+
+
+Donde la búsqueda de la ciudad del conjunto $V$ que menos aumenta la distancia de $S$ es de orden $O(n^2)$ por lo que estaríamos hablando de un algoritmo de orden $O(n^3)$.
+
+
 \subsubsection{Visualización}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=13cm]{data/graphics/insercion/insercion_final.pdf}
 \end{figure}
-
-\subsubsection{Eficiencia teórica}
-La eficiencia teórica O(n) depende del número de ciudades que hay. Tomamos, por tanto, $TAM = num\_ciudades = n$.\\
-
-La eficiencia del algoritmo, en el peor de los casos, es 
-$$T(n) = \sum_{i=1}^{n}\sum_{j=i}^{n}$$
-$$T(n) = n*(n-i)$$
-$$T(n) \in O(n^2)$$\\
-
-Para hallar esto nos debemos de fijar en el bucle que comienza en la línea 113 y analizarlo. Nos damos cuenta que el algoritmo revisa todas las ciudades para quedarse con la que aumenta el recorrido total en menor medida. Y eso lo realiza con cada ciudad nueva que se añade al bucle.
 
 
 \newpage
