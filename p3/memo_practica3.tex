@@ -302,8 +302,14 @@ int main(int argc, char **argv){
 \end{figure}
 
 \subsubsection{Eficiencia teórica}
+La eficiencia teórica O(n) depende del número de ciudades que hay. Tomamos, por tanto, $TAM = dimension = n$.\\
 
+La eficiencia del algoritmo, en el peor de los casos, es 
+$$T(n) = \sum_{i=1}^{n}\sum_{j=1}^{n}$$
+$$T(n) = n*n$$
+$$T(n) \in O(n^2)$$\\
 
+Esto es debido a que la función $BuscaMenor$ es de tiempo $n$, y se ejecuta también $n$ veces en el bucle $while$ de la línea 112.
 
 
 
@@ -513,6 +519,10 @@ int main(int argc, char **argv){
 \newpage
 \subsection{Algoritmo con otra estrategia}
 
+\subsubsection{Visualización}
+
+\subsubsection{Eficiencia teórica}
+
 
 \newpage
 \subsection{Comparación de algoritmos}
@@ -698,12 +708,12 @@ int main(int argc, char **argv){
 \end{figure}
 
 \subsubsection{Eficiencia teórica}
-La eficiencia teórica O(n) depende del número de ciudades que hay. Tomamos, por tanto, $TAM = num\_ciudades = n$.
+La eficiencia teórica O(n) depende del número de ciudades que hay. Tomamos, por tanto, $TAM = num\_ciudades = n$.\\
 
 La eficiencia del algoritmo, en el peor de los casos, es 
 $$T(n) = \sum_{i=1}^{n}\sum_{j=i}^{n}$$
 $$T(n) = n*(n-i)$$
-$$T(n) \in O(n^2)$$
+$$T(n) \in O(n^2)$$\\
 
 Para hallar esto nos debemos de fijar en el bucle que comienza en la línea 112 y analizarlo. Nos damos cuenta que, en el peor de los casos, el algoritmo revisa todas las ciudades y escoge la última, y luego vuelve a revisarlas todas y escoger la última, y así consecutivamente.
 
