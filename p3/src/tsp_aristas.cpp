@@ -19,6 +19,22 @@ double Distancia(const pair<double,double> & posicion_A,
   return distancia;
 }
 
+int Buscar(vector<int> v, int n){
+    int inicio = 0;
+    int fin = v.size()-1;
+
+    while ((inicio != fin)){
+        if(v[inicio] == n){
+            return inicio;
+        }
+        if(v[fin] == n){
+            return fin;
+        }
+    }
+
+    return -1;
+}
+
 /**
  * @brief Estructura que representa una arista del grafo
  * @param a Una ciudad del grafo
@@ -40,6 +56,9 @@ struct aristaComparator{
             return false;
     }
 };
+
+typedef set<Arista,aristaComparator> Set_Aristas;
+typedef set<Arista, aristaComparator>::iterator Set_Aristas_iterator;
 
 /**
  * Este programa busca un ciclo que recorra todas las ciudades de 
@@ -68,6 +87,7 @@ int main(int argc, char **argv){
 
     vector<int> candidatos;
     vector<int> solucion;
+    vector<Arista> solucion_aristas;
     
     //Movemos el offset a la linea en la que se dice la dimensión del grafo
     for(int i=0; i<3; ++i){
@@ -80,7 +100,7 @@ int main(int argc, char **argv){
     
     //Reservamos espacio para el grafo
     matriz <double> distancias(num_ciudades, num_ciudades, 0);
-    set <Arista, aristaComparator> aristas;
+    Set_Aristas aristas;
 
     //Movemos el offset al comienzo de los datos
     for(int i=0; i<3; ++i){
@@ -107,21 +127,37 @@ int main(int argc, char **argv){
 
     //Vector con el grado de cada nodo del grafo solución
     vector<int> grado(num_ciudades);
-    grado.insert(grado.begin(), num_ciudades, 0);
-
-    
+    grado.insert(grado.begin(), num_ciudades, 0);    
 
     //Generamos vector de candidatos
     for(int i=0; i<num_ciudades; ++i)
         candidatos.push_back(i);
+    
 
-    int tam_solucion = solucion.size(); //Tamaño del conjunto solucion
+    int tam_solucion = solucion_aristas.size(); //Tamaño del conjunto solucion
+
+    Set_Aristas_iterator it = aristas.begin();
+    while(tam_solucion < num_ciudades-1){
+        bool valido = false;
+        while((!valido) && (it!=aristas.end())){
+            if(grado[(*it).a] < 2 && grado[(*it).b] < 2){
+                valido = true;
+                solucion_aristas.push_back(*it);
+                ++tam_solucion;
+                grado[(*it).a]++;
+                grado[(*it).b]++;
+            }
+                
+            
+            ++it;
+        }        
+    }
 
     //Mostramos la solución
     cout << "Solucion: " << endl;
 
     for(int i=0; i<tam_solucion; ++i){
-        cout << solucion[i]+1 << " ";
+        cout << solucion_aristas[i].a + 1 << " - " << solucion_aristas[i].b + 1 << endl;
     }
     cout << endl;
 
