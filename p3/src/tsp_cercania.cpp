@@ -38,11 +38,12 @@ int BuscaMenor(vector<double> v, vector<int> & candidatos){
 int main(int argc, char **argv){
 
     string output_filename = "data/output/";
-    output_filename += "a280.tsp";
-    output_filename += "_cercania.txt";
     string input_filename;
     input_filename += argv[1];
     ifstream input_file(input_filename);
+    input_filename.erase(0, 10);
+    output_filename += input_filename;
+    output_filename += "_cercania.txt";
 
     string line;
     int dimension;

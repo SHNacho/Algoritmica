@@ -40,4 +40,4 @@ clean:
 	rm -rf $(BIN)/* $(OBJ)/* tsp.zip
 	
 zip: clean
-	zip -r tsp.zip bin include makefile obj src data
+	zip -r practica3.zip bin include makefile obj src data memo_practica3.pdf
