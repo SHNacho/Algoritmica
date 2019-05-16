@@ -367,7 +367,9 @@ Fijándonos en el pseudocódigo, vemos que la búsqueda de la ciudad del conjunt
 
 \newpage
 \subsection{Algoritmo con otra estrategia}
-A continuación, se ha implantado una estrategia nueva basada en las aristas para resolver este algoritmo.
+A continuación, se ha implantado una estrategia nueva para resolver este algoritmo.
+
+El algoritmo se basa en recorrer las ciudades de más al norte a más al sur. Sería igualmente factible haciéndolo desde cualquier extremo y hasta el opuesto.
 
 \subsubsection{Código del programa}
 Aquí se muestra la parte del código del programa desarrollado en C++ que contiene el algoritmo principal utilizado.
@@ -401,8 +403,24 @@ cout << endl;
 \end{lstlisting}
 
 \subsubsection{Pseudocódigo}
+El nuevo algoritmo que hemos creado en pseudocódigo es el siguiente:
+\begin{lstlisting}
+N = |V|
+Repetir
+	U = Buscar ciudad del conjunto V que esta mas al norte
+	Eliminar U de V
+	Insertar U en S
+Hasta que |S| = N
+Insertar de nuevo en S la primera ciudad que habiamos insertado al principio
+Devolver S
+\end{lstlisting}
 
 \subsubsection{Visualización}
+Aquí podemos observar un resultado de aplicar el algoritmo.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{data/graphics/otro/otro.pdf}
+\end{figure}
 
 \subsubsection{Eficiencia teórica}
 
