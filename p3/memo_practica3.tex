@@ -451,6 +451,7 @@ Si el algoritmo finaliza sin mensaje de error significa que se ha conseguido lle
 \subsubsection{Código del programa}
 Aquí se muestra la parte del código del programa desarrollado en C++ que contiene el algoritmo principal utilizado.
 
+\marginnote{\textbf{NOTA}: Se ha añadido aquí una función a la cual hace referencia el algoritmo principal.}
 \begin{lstlisting}[style=C++]
 int BuscarGasolinera(const int autonomia,const int pos_actual, const int ciudad_destino, matriz<double> & grafo,  vector<int> &candidatos){
 
@@ -470,6 +471,8 @@ int BuscarGasolinera(const int autonomia,const int pos_actual, const int ciudad_
 	return(parada);
 }
 \end{lstlisting}
+
+\marginnote{\textbf{NOTA}: Este es el algoritmo principal.}
 \begin{lstlisting}[style=C++]
 vector<int> candidatos;
 vector<int> solucion;
@@ -511,9 +514,11 @@ cout << "FIN" << endl;
 \end{lstlisting}
 
 \subsubsection{Pseudocódigo}
+
+\marginnote{\textbf{NOTA}: Con \textit{ciudades} también se puede entender a las gasolineras.}
 \begin{lstlisting}
 Mientras no se llegue al destino o a un punto sin salida:
-	Encontrar gasolineras / ciudades posibles con la autonomia;
+	Encontrar ciudades posibles con la autonomia;
 	Si podemos ir a gasolineras o a la ciudad objetivo:
 		Si podemos ir a la ciudad objetivo:
 			FIN;
