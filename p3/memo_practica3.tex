@@ -141,6 +141,13 @@ El problema se resume en encontrar un circuito hamiltoniano para una serie de pu
 
 \subsection{Algoritmo basado en cercanía}
 
+En primer lugar, hemos desarrollado una estrategia basada en encontrar el “vecino más cercano”: tomamos una ciudad inicial inicial de manera arbitraria, y buscamos en el vector de ciudades que no se han visitado la ciudad más cercana a esta. Una vez encontrada, se procede a hacer un borrado lógico de la ciudad en el vector, y se procede a encontrar la ciudad más cercana a esta última visitada.\\
+
+El procedimiento se repite hasta que todas las ciudades se hayan visitado, obteniendo el camino.\\
+
+Hemos creado también una clase matriz que hemos usado de forma auxiliar para simplificar la parte del código del algoritmo que se detalla a continuación.\\
+
+\subsubsection{Código del programa}
 \begin{lstlisting}[style=C++]
 #include <iostream>
 #include <fstream>
@@ -286,10 +293,45 @@ int main(int argc, char **argv){
 	//FIN.
 	return (0);
 }
-\end{lstlisting} 
+\end{lstlisting}
+
+\subsubsection{Pseudocódigo}
+El algoritmo por cercanía en pseudocódigo es el siguiente:
+\begin{lstlisting}
+N = |V|
+S = {primera ciudad de V}
+Repetir
+	U = Buscar ciudad del conjunto V mas cercana a la ultima ciudad insertada en S
+	Eliminar U de V
+	Insertar U en S
+Hasta que |S| = N
+Insertar de nuevo en S la primera ciudad que habiamos insertado al principio
+Devolver S
+\end{lstlisting}
+
+\subsubsection{Visualización}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{data/graphics/cercania/cercania.pdf}
+\end{figure}
+
+\subsubsection{Eficiencia teórica}
+La eficiencia teórica O(n) depende del número de ciudades que hay. Tomamos, por tanto, $TAM = dimension = n$.\\
+
+La eficiencia del algoritmo, en el peor de los casos, es 
+$$T(n) = \sum_{i=1}^{n}\sum_{j=1}^{n}$$
+$$T(n) = n*n$$
+$$T(n) \in O(n^2)$$\\
+
+Esto es debido a que la función $BuscaMenor$ es de tiempo $n$, y se ejecuta también $n$ veces en el bucle $while$ de la línea 112.
+
+
 
 \newpage
 \subsection{Algoritmo basado en inserción}
+Este algoritmo greedy para resolver el problema del viajante de comercio consiste en partir de un circuito inicial. En nuestro caso las ciudades elegidas para el circuito inicial son la más al Este, la más al Oeste y la más al Norte. Una vez escogido el recorrido inicial comienza el algoritmo. Nuestro algoritmo de inserción se basa en insertar en cada iteración la ciudad que menos aumenta el tamaño de este.
+
+\subsubsection{Código del programa}
 \begin{lstlisting}[style=C++]
 #include <iostream>
 #include <fstream>
@@ -368,7 +410,7 @@ int main(int argc, char **argv){
 	
 	//Generamos vector de candidatos
 	for(int i=0; i<num_ciudades; ++i)
-	candidatos.push_back(i);
+		candidatos.push_back(i);
 	
 	//Elegimos el recorrido inicial
 	int E = 0, O = 0, N = 0;
@@ -482,9 +524,206 @@ int main(int argc, char **argv){
 }
 \end{lstlisting}
 
+\subsubsection{Pseudocódigo}
+El algoritmo por inserción en pseudocódigo es el siguiente:
+\begin{lstlisting}
+N = |V|
+S = {ciudad mas al Norte, 
+	ciudad mas al Este, 
+	ciudad mas al Oeste}
+Repetir
+	U = Buscar ciudad del conjunto V que menos aumenta la distancia de S
+	Eliminar U de V
+	Insertar U en S
+Hasta que |S| = N
+Devolver S
+\end{lstlisting}
+
+\subsubsection{Visualización}
+Empezamos seleccionando 3 ciudades distanciadas.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{data/graphics/insercion/insercion_1.pdf}
+\end{figure}
+\vspace{0,7cm}
+
+Continuamos añadiendo aquella ciudad que aumente en menor medida el recorrido total.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{data/graphics/insercion/insercion_2.pdf}
+\end{figure}
+\vspace{0,7cm}
+
+Como podemos comprobar, se añaden las ciudades en el lugar que hagan que el recorrido total sea menor.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{data/graphics/insercion/insercion_3.pdf}
+\end{figure}
+\vspace{0,7cm}
+
+Tras terminar obtenemos el recorrido final.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{data/graphics/insercion/insercion_final.pdf}
+\end{figure}
+
+\subsubsection{Eficiencia teórica}
+Fijándonos en el pseudocódigo, vemos que la búsqueda de la ciudad del conjunto $V$ que menos aumenta la distancia de $S$ es de orden $O(n^2)$ por lo que estaríamos hablando de un algoritmo de orden $O(n^3)$.
+
 
 \newpage
 \subsection{Algoritmo con otra estrategia}
+A continuación, se ha implantado una estrategia nueva para resolver este algoritmo.
+
+\subsubsection{Código del programa}
+\begin{lstlisting}[style=C++]
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <utility>
+#include <cmath>
+#include <limits>
+#include <set>
+#include "matriz.h"
+
+using namespace std;
+
+double Distancia(const pair<double,double> & posicion_A, const pair<double,double> &posicion_B){
+	double distancia = sqrt(pow(posicion_A.first - posicion_B.first,2) + pow(posicion_A.second-posicion_B.second,2));
+	
+	return distancia;
+}
+
+/**
+* @brief Estructura que representa una arista del grafo
+* @param a Una ciudad del grafo
+* @param b Otra ciudad del grafo
+* @param distancia Distancia entre la ciudad a y b
+*/
+struct Arista{
+	int a;
+	int b;
+	double distancia;
+};
+
+struct aristaComparator{
+	bool operator ()(const Arista arista1, const Arista arista2) const{
+		if (arista1.distancia < arista2.distancia)
+			return true;
+		else 
+			return false;
+	}
+};
+
+/**
+* Este programa busca un ciclo que recorra todas las ciudades de 
+* un mapa mediante un algoritmo de tipo greedy. En esta version
+* del algoritmo, dado un recorrido inicial que contiene tres nodos
+* en cada paso se busca el nodo mas cercano al conjunto solucion que
+* se encuentre en el conjunto de candidatos. El nodo mas cercano es
+* insertado en la posicion del vector que menos aumente el recorrido.
+*/
+int main(int argc, char **argv){
+	const double INF = numeric_limits<double>::max();
+	
+	if(argc < 2){
+		cout << "ERROR. Faltan argumentos [archivo de datos]" << endl;
+		exit(-1);
+	}
+	
+	ifstream input_file(argv[1]);
+	string line;
+	int num_ciudades;
+	
+	int ciudad;
+	double coor_x, coor_y;
+	vector<pair<double, double> > v_coordenadas;
+	pair<double, double> coordenadas;
+	
+	vector<int> candidatos;
+	vector<int> solucion;
+	
+	//Movemos el offset a la linea en la que se dice la dimension del grafo
+	for(int i=0; i<3; ++i){
+		getline(input_file, line);
+	}
+	
+	getline(input_file, line);
+	line.erase(0, 11);
+	num_ciudades = atoi(line.c_str());
+	
+	//Reservamos espacio para el grafo
+	matriz <double> distancias(num_ciudades, num_ciudades, 0);
+	set <Arista, aristaComparator> aristas;
+	
+	//Movemos el offset al comienzo de los datos
+	for(int i=0; i<3; ++i){
+		getline(input_file, line);
+	}
+	
+	//Tomamos los datos
+	for (int i=0; i<num_ciudades; ++i){
+		input_file >> ciudad;
+		input_file >> coor_x;
+		input_file >> coor_y;
+		coordenadas.first = coor_x;
+		coordenadas.second = coor_y;
+		v_coordenadas.push_back(coordenadas);
+	}
+	
+	//Ordenamos las aristas del grafo de menor a mayor
+	for(int i=0; i<num_ciudades; ++i){
+		for (int j=i+1; j<num_ciudades; ++j){
+			Arista a{i, j, Distancia(v_coordenadas[i], v_coordenadas[j])};
+			aristas.insert(a);
+		}
+	}
+	
+	//Vector con el grado de cada nodo del grafo solucion
+	vector<int> grado(num_ciudades);
+	grado.insert(grado.begin(), num_ciudades, 0);
+	
+	
+	
+	//Generamos vector de candidatos
+	for(int i=0; i<num_ciudades; ++i)
+		candidatos.push_back(i);
+	
+	int tam_solucion = solucion.size(); //Tamanio del conjunto solucion
+	
+	//Mostramos la solucion
+	cout << "Solucion: " << endl;
+	
+	for(int i=0; i<tam_solucion; ++i){
+		cout << solucion[i]+1 << " ";
+	}
+	cout << endl;
+	
+	//Calculo de la distancia total recorrida
+	double distancia_recorrida = 0.00;
+	for(int i=0; i<tam_solucion-1; ++i){
+		distancia_recorrida += distancias[i][i+1];
+	}
+	
+	cout << "Distancia total recorrida: " << distancia_recorrida << endl;
+	
+	//Salida de la solucion a fichero
+	ofstream output_file("data/ulysses16_aristas.txt");
+	for(int i=0; i<tam_solucion; ++i){
+		int c = solucion[i];
+		output_file << c+1 << " " << v_coordenadas[c].first << " " << v_coordenadas[c].second << endl;
+	}
+	
+	return (0);
+}
+\end{lstlisting}
+
+\subsubsection{Pseudocódigo}
+
+\subsubsection{Visualización}
+
+\subsubsection{Eficiencia teórica}
 
 
 \newpage
@@ -492,14 +731,210 @@ int main(int argc, char **argv){
 
 
 \newpage
-\section{Problema específico - Ahorro de gasolina}
+\section{Problema específico}
+\subsection{Ahorro de gasolina}
 El problema trata de partir de una ciudad y llegar a otra con un vehículo con cierta autonomía pasando por el menor número de gasolineras posibles.\\
 
-Para entender el algoritmo lo podemos imaginar gráficamente. La autonomía del coche va a ser el radio de la circunferencia de centro la primera ciudad o gasolinera en donde nos encontremos.\\
+Para entender el algoritmo lo podemos imaginar gráficamente. La autonomía del coche va a ser el radio de la circunferencia de centro la primera ciudad o gasolinera en donde nos encontremos en cada momento.\\
 
 Dentro de esa circunferencia se encontrarán las gasolineras a las que podemos llegar con la autonomía del vehículo. Solo nos queda elegir a cual de ellas. Muy facil, nos vamos a la gasolinera que este más cerca de la ciudad objetivo. \\
 
-Así nos vamos moviendo de gasolinera en gasolinera hasta que dentro de nuestra circunferencia se encuentre a la ciudad objetivo.
+Así nos vamos moviendo de gasolinera en gasolinera hasta que dentro de nuestra circunferencia se encuentre a la ciudad objetivo.\\
+
+En el desarrollo de este algoritmo nos encontramos un error en tiempo de ejecución de violación de segmento. Esto se debía a que no hacíamos un clear del vector que contenía las distancias desde la posición actual hasta el resto de gasolineras.\\
+
+En el código, más concretamente en la funcion “BuscarGasolinera“,recopilamos las ciudades que están dentro de la circunferencia en el vector de “indices\_posibles\_gasolineras” en donde guardamos los índices de las gasolineras.\\
+
+Después de recopilarlas, buscamos en él, el índice de la gasolinera que minimiza la distancia a la ciudad objetivo y guardamos el índice de aquella que cumple el criterio de optimalidad.\\
+
+La función devuelve el índice que será añadido al vector solución y borrado de manera lógica del vector de candidatos.\\
+
+En el caso de que el índice devuelto de la función sea -1 significa que hemos llegado a un punto en el que desde la gasolinera que nos encontramos no podemos ir a ninguna otra con la autonomía dada. Para indicarlo se muestra un mensaje de error y finaliza el algoritmo.\\
+
+Si el algoritmo finaliza sin mensaje de error significa que se ha conseguido llegar a la ciudad objetivo.\\
+
+\subsubsection{Código del programa}
+\begin{lstlisting}[style=C++]
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <utility>
+#include <cmath>
+#include <limits>
+#include "matriz.h"
+#include <iomanip>
+
+using namespace std;
+const double INF = numeric_limits<double>::max();
+
+
+double Distancia(const pair<double,double> & posicion_A, const pair<double,double> &posicion_B){
+
+	double distancia = sqrt(pow(posicion_A.first - posicion_B.first,2) + pow(posicion_A.second-posicion_B.second,2));
+	
+	return distancia;
+}
+
+//TODO
+int BuscarGasolinera(const int autonomia,const int pos_actual, const int ciudad_destino, matriz<double> & grafo,  vector<int> &candidatos){
+
+	int parada = -1;
+	vector<int> indices_posibles_gasolineras;
+	double minimo = INF;
+	
+	for (int i = 0 ;i <candidatos.size();++i){
+		double distancia_actual_candidato = grafo[pos_actual][i];
+		double distancia_candidato_destino = grafo[i][ciudad_destino];
+		if((distancia_actual_candidato <= autonomia) && (candidatos[i] != -1) && (distancia_candidato_destino < minimo)){
+			parada = i;
+			minimo = distancia_candidato_destino;
+		}
+	}
+	
+	return(parada);
+}
+
+int main(int argc, char **argv){
+
+	string line;
+	int num_ciudades;
+	
+	if(argc<5){
+		cout << "Faltan argumentos:\n" "./gasolineras [archivo] [autonomia] [ciudad origen] [ciudad destino]" << endl;
+	}
+	
+	ifstream input_file(argv[1]);
+	double autonomia = atoi(argv[2]);
+	int ciudad_origen = atoi(argv[3]) - 1;
+	int ciudad_destino = atoi(argv[4]) - 1;
+	int pos_actual = ciudad_origen;
+	
+	//Variables que usaremos para crear la matriz de distancias (grafo)
+	int ciudad;
+	double coor_x, coor_y;
+	vector<pair<double, double> > v_coordenadas;
+	pair<double, double> p;
+	
+	//Movemos el offset a la linea en la que se dice la dimension del grafo
+	for(int i=0; i<3; ++i){
+		getline(input_file, line);
+	}
+	
+	getline(input_file, line);
+	line.erase(0, 11);
+	num_ciudades = atoi(line.c_str());
+	
+	//Reservamos espacio para el grafo
+	matriz<double> distancias(num_ciudades, num_ciudades, 0);
+	
+	
+	//Movemos el offset al comienzo de los datos
+	for(int i=0; i<3; ++i){
+		getline(input_file, line);
+	}
+	
+	//Tomamos los datos
+	for (int i=0; i<num_ciudades; ++i){
+		input_file >> ciudad;
+		input_file >> coor_x;
+		input_file >> coor_y;
+		p.first = coor_x;
+		p.second = coor_y;
+		v_coordenadas.push_back(p);
+	}
+	
+	//Calculamos las distancias y las metemos en la matriz que representa
+	//el grafo
+	for(int i=0; i<num_ciudades; ++i){
+		for (int j=i+1; j<num_ciudades; ++j){
+			distancias[i][j]=Distancia(v_coordenadas[i], v_coordenadas[j]);
+			distancias[j][i]=distancias[i][j];
+		}
+	}
+	
+	//Comienzo del algoritmo
+	vector<int> candidatos;
+	vector<int> solucion;
+	solucion.push_back(ciudad_origen);
+	
+	for(int i = 0; i< num_ciudades; i++)
+		candidatos.push_back(i);
+	
+	candidatos[ciudad_origen] = -1;
+	bool fin = false;
+	pos_actual = ciudad_origen;
+	
+	
+	while(fin == false){
+		if(autonomia >= distancias[pos_actual][ciudad_destino]){
+			cout << "FIN = DESTINO" <<  endl;
+			solucion.push_back(ciudad_destino);
+			fin = true;
+		}
+	
+		else{
+			pos_actual = BuscarGasolinera(autonomia,pos_actual, ciudad_destino, distancias, candidatos);
+		
+			if(pos_actual != -1){
+				candidatos[pos_actual] = -1;
+				solucion.push_back(pos_actual);
+			}
+			else{
+				cout << "No podemos llegar a ninguna otra gasolinera" << endl;
+				fin = true;
+			}
+		}
+	}
+	
+	for (int i = 0; i<solucion.size(); ++i){
+		cout << solucion[i]+1 << " --> ";
+	}
+	
+	cout << "FIN" << endl;
+	
+	ofstream ficherosalida("data/gasolineras.txt");
+	for (int i = 0; i < solucion.size(); ++i){
+		int c = solucion[i];
+		ficherosalida << c+1 << " " << v_coordenadas[c].first << " " << v_coordenadas[c].second << endl;
+	}
+	
+	return(0);
+}
+\end{lstlisting}
+
+\subsubsection{Pseudocódigo}
+\begin{lstlisting}
+Mientras no se llegue al destino o a un punto sin salida:
+	Encontrar gasolineras / ciudades posibles con la autonomia;
+	Si podemos ir a gasolineras o a la ciudad objetivo:
+		Si podemos ir a la ciudad objetivo:
+			FIN;
+		Si podemos ir a una o varias gasolineras:
+			Elegir la mas cercana a la ciudad objetivo;
+			Anadir al vector solucion;
+			Posicionarnos en la nueva gasolinera;
+	Si no podemir a ningun lado:
+		FIN;
+\end{lstlisting}
+
+
+
+\subsubsection{Visualización}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{data/graphics/gasolineras/gasolineras.pdf}
+\end{figure}
+
+\subsubsection{Eficiencia teórica}
+La eficiencia teórica O(n) depende del número de ciudades que hay. Tomamos, por tanto, $TAM = num\_ciudades = n$.\\
+
+La eficiencia del algoritmo, en el peor de los casos, es 
+$$T(n) = \sum_{i=1}^{n}\sum_{j=i}^{n}$$
+$$T(n) = n*(n-i)$$
+$$T(n) \in O(n^2)$$\\
+
+Para hallar esto nos debemos de fijar en el bucle que comienza en la línea 112 y analizarlo. Nos damos cuenta que, en el peor de los casos, el algoritmo revisa todas las ciudades y escoge la última, y luego vuelve a revisarlas todas y escoger la última, y así consecutivamente.
 
 
 %----------------------------------------------------------------------------------------
