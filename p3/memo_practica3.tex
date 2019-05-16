@@ -293,7 +293,19 @@ int main(int argc, char **argv){
 	//FIN.
 	return (0);
 }
-\end{lstlisting} 
+\end{lstlisting}
+
+\subsubsection{Visualización}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{data/graphics/cercania/cercania.pdf}
+\end{figure}
+
+\subsubsection{Eficiencia teórica}
+
+
+
+
 
 \newpage
 \subsection{Algoritmo basado en inserción}
@@ -489,6 +501,14 @@ int main(int argc, char **argv){
 }
 \end{lstlisting}
 
+\subsubsection{Visualización}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{data/graphics/insercion/insercion_final.pdf}
+\end{figure}
+
+\subsubsection{Eficiencia teórica}
+
 
 \newpage
 \subsection{Algoritmo con otra estrategia}
@@ -499,7 +519,8 @@ int main(int argc, char **argv){
 
 
 \newpage
-\section{Problema específico - Ahorro de gasolina}
+\section{Problema específico}
+\subsection{Ahorro de gasolina}
 El problema trata de partir de una ciudad y llegar a otra con un vehículo con cierta autonomía pasando por el menor número de gasolineras posibles.\\
 
 Para entender el algoritmo lo podemos imaginar gráficamente. La autonomía del coche va a ser el radio de la circunferencia de centro la primera ciudad o gasolinera en donde nos encontremos.\\
@@ -669,6 +690,22 @@ int main(int argc, char **argv){
 	return(0);
 }
 \end{lstlisting}
+
+\subsubsection{Visualización}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{data/graphics/gasolineras/gasolineras.pdf}
+\end{figure}
+
+\subsubsection{Eficiencia teórica}
+La eficiencia teórica O(n) depende del número de ciudades que hay. Tomamos, por tanto, $TAM = num\_ciudades = n$.
+
+La eficiencia del algoritmo, en el peor de los casos, es 
+$$T(n) = \sum_{i=1}^{n}\sum_{j=i}^{n}$$
+$$T(n) = n*(n-i)$$
+$$T(n) \in O(n^2)$$
+
+Para hallar esto nos debemos de fijar en el bucle que comienza en la línea 112 y analizarlo. Nos damos cuenta que, en el peor de los casos, el algoritmo revisa todas las ciudades y escoge la última, y luego vuelve a revisarlas todas y escoger la última, y así consecutivamente.
 
 
 %----------------------------------------------------------------------------------------
