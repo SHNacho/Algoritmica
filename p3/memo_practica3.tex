@@ -436,7 +436,7 @@ En este apartado, se adjuntan, tras ejecutar los algoritmos y obtener sus result
 
 Como podemos observar, y era de esperar, la solución obtenida en estos tres no es la más óptima (no es el óptimo global), sino el resultado de aplicar una estrategia que minimice la distancia de ciudad en ciudad, por lo que se obtiene un resultado que no es el más óptimo pero es bastante eficiente en relación al resultado que da (que en algunos casos se aproxima al óptimo).\\
 
-En las siguientes figuras, podemos observar de izquierda a derecha los resultados de aplicar los algoritmos de cercanía, de inserción, y el de creación propia.
+En las siguientes figuras, podemos observar de izquierda a derecha los resultados de aplicar los algoritmos de cercanía, de inserción, y el de creación propia a los datos con 16 puntos.
 
 \begin{figure}[H]
 	\includegraphics[width=4.5cm]{data/graphics/comparacion/cercania.png}
@@ -444,7 +444,35 @@ En las siguientes figuras, podemos observar de izquierda a derecha los resultado
 	\includegraphics[width=5.35cm]{data/graphics/comparacion/otro.png}
 \end{figure}
 
-En la siguiente figura podemos ver cual habría sido el resultado óptimo.
+En la siguiente figura podemos ver cual habría sido el resultado óptimo para los datos con 16 puntos.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=5cm]{data/graphics/comparacion/tsp_optimo.png}
+\end{figure}
+\vspace{0,7cm}
+
+Para una mejor comparación, en las siguientes gráficas se puede ver también cómo se aplicarían los algoritmos a una colección de datos con 280 puntos.\\
+
+Esta primera figura es con el algoritmo por cercanía, y recorre en total 3.081,78 kilómetros.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{data/graphics/cercania/cercania_280.pdf}
+\end{figure}
+\vspace{0,7cm}
+
+Esta segunda figura es con el algoritmo por inserción, y recorre en total 2975,67 kilómetros.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{data/graphics/insercion/insercion_280.pdf}
+\end{figure}
+\vspace{0,7cm}
+
+Y esta tercera figura es con el algoritmo nuevo creado por nosotros, y recorre en total 13.095,7 kilómetros.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{data/graphics/otro/otro_280.pdf}
+\end{figure}
 
 
 \newpage
