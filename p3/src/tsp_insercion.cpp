@@ -7,16 +7,16 @@
 #include <limits>
 #include "matriz.h"
 
-using namespace std;
+//#define TEST
 
+using namespace std;
 
 /**
  * Este programa busca un ciclo que recorra todas las ciudades de 
  * un mapa mediante un algoritmo de tipo greedy. En esta versión
- * del algoritmo, dado un recorrido inicial que contiene tres nodos
- * en cada paso se busca el nodo más cercano al conjunto solución que
- * se encuentre en el conjunto de candidatos. El nodo más cercano es
- * insertado en la posición del vector que menos aumente el recorrido.
+ * del algoritmo, dado un recorrido inicial que contiene tres nodos,
+ * en cada paso se busca el nodo que menos aumenta el tamaño del recorrido
+ * y es insertado en la posición en la que cumple esta condición.
  */
 int main(int argc, char **argv){
     const double INF = numeric_limits<double>::max();
@@ -26,7 +26,12 @@ int main(int argc, char **argv){
         exit(-1);
     }
     
-    ifstream input_file(argv[1]);
+    string input_filename = "data/input/";
+    if(input_filename.find("data/input")){
+        input_filename = "";
+    }
+    input_filename += argv[1];
+    ifstream input_file(input_filename);
     string line;
     int num_ciudades;
 
@@ -65,6 +70,8 @@ int main(int argc, char **argv){
         coordenadas.second = coor_y;
         v_coordenadas.push_back(coordenadas);
     }
+
+    input_file.close();
 
     //Calculamos las distancias y las metemos en la matriz que representa
     //el grafo
@@ -109,60 +116,63 @@ int main(int argc, char **argv){
 
     //Comienzo del algoritmo
     vector<int>::iterator sol_it, cand_it;  //Iteradores de los vectores de candidatos y solución
-    vector<int>::iterator ciudad_origen_it; //Iterador que almacenará la posición de la ciudad del
-                                            //conjunto solución, que tiene más cerca a una ciudad
-                                            //del conjuno candidatos    
 
-    while(tam_solucion < num_ciudades){ //Mientras que no hayamos recorrido todas las ciudades
-                                        //Buscamos la ciudad más cercana al conjunto solución
-        int ciudad_mas_cercana = 0;
-        double distancia_mas_cercana = INF;
+    #ifdef TEST
+        int i = 0;
+    #endif
+    //Buscamos la ciudad que menos aumenta el tamaño del recorrio
+    while(tam_solucion < num_ciudades){
 
-        for(sol_it=solucion.begin(); sol_it!=solucion.end(); ++sol_it){
-            for (cand_it=candidatos.begin(); cand_it!=candidatos.end(); ++cand_it){
-                if ((distancias[*sol_it][*cand_it] < distancia_mas_cercana) && (*cand_it != -1)){
-                    ciudad_origen_it = sol_it;
-                    ciudad_mas_cercana = *cand_it;
-                    distancia_mas_cercana = distancias[*sol_it][*cand_it];
-                }
+        int ciudad_insertada;
+        vector<int>::iterator pos_insercion;
+        double aumento_minimo = INF;
+
+        for(cand_it = candidatos.begin(); cand_it != candidatos.end(); ++cand_it){
+            if(*cand_it != -1){
+                for(sol_it=solucion.begin(); sol_it!=solucion.end(); ++sol_it){
+                    //Tenemos en cuenta que es un ciclo por lo que la ciudad siguiente al
+                    //ultimo elemento del conjunto solución es el primer elemento
+                    vector<int>::iterator ciudad_siguiente = sol_it;
+                    if(sol_it == --solucion.end())
+                        ciudad_siguiente = solucion.begin();
+                    else
+                        ++ciudad_siguiente;
+
+                    //Calculamos el aumento del recorrido al insertar un elemento de los candidatos
+                    double aumento_distancia = (distancias[*sol_it][*cand_it]+distancias[*cand_it][*ciudad_siguiente])
+                                        - distancias[*sol_it][*ciudad_siguiente];
+                    //Nos quedamos con la ciudad que menos aumente el recorrido
+                    if(aumento_distancia < aumento_minimo){
+                        ciudad_insertada = *cand_it;
+                        aumento_minimo = aumento_distancia;
+                        pos_insercion = ciudad_siguiente;
+                    }
+                }  
             }
         }
+        
+        //Insertamos la ciudad
+        solucion.insert(pos_insercion, ciudad_insertada);
+        candidatos[ciudad_insertada] = -1;  //La "eliminamos" del vector de candidatos
+        ++tam_solucion;                     //Aumentamos el tamaño del vector solución
 
-        //Una vez encontrada vemos en que posición del conjunto solución insertarla para minimizar el trayecto
-        vector<int>::iterator ciudad_siguiente_it = ciudad_origen_it;
-        vector<int>::iterator ciudad_anterior_it = ciudad_origen_it;
-        vector<int>::iterator final_it = solucion.end();
-        final_it--;
+#ifdef TEST
+        string of = to_string(i);
 
-        //Puesto que el recorrido es un ciclo (cerrado) hay que contemplar el caso de que la
-        //ciudad a insertar sea adyacente al primer o último elemento del conjunto solución
-        if(ciudad_origen_it == solucion.begin()){
-            ++ciudad_siguiente_it;
-            ciudad_anterior_it = final_it;
+        ofstream output_file(of);
+        for(int i=0; i<tam_solucion; ++i){
+            int c = solucion[i];
+            output_file << c+1 << " " << v_coordenadas[c].first << " " << v_coordenadas[c].second << endl;
         }
-        else if(ciudad_origen_it == final_it){
-            ciudad_siguiente_it = solucion.begin();
-            --ciudad_anterior_it;
-        }
-        else{
-            ++ciudad_siguiente_it;
-            --ciudad_anterior_it;
-        }
-
-
-        if(distancias[ciudad_mas_cercana][*ciudad_anterior_it] < distancias[ciudad_mas_cercana][*ciudad_siguiente_it]){
-            solucion.insert(ciudad_origen_it, ciudad_mas_cercana);
-        }
-        else{
-            solucion.insert(ciudad_siguiente_it, ciudad_mas_cercana);
-        }
-
-        candidatos[ciudad_mas_cercana] = -1;
-        tam_solucion++;
-    }
+        int c = solucion[0];
+        output_file << c+1 << " " << v_coordenadas[c].first << " " << v_coordenadas[c].second << endl;
+        output_file.close();
+        ++i;
+#endif
+    }    
 
     //Insertamos de nuevo el primer elemento del conjunto solución
-    // ya que es un caamino cerrado
+    // ya que es un camino cerrado
     solucion.push_back(*solucion.begin());
     ++tam_solucion;
 
@@ -174,7 +184,7 @@ int main(int argc, char **argv){
     }
     cout << endl;
 
-    //Cálculo de la distancia total recorrida
+    //Cálculo de la aumento_distancia total recorrida
     double distancia_recorrida = 0.00;
     for(int i=0; i<tam_solucion-1; ++i){
         distancia_recorrida += distancias[i][i+1];
@@ -183,11 +193,13 @@ int main(int argc, char **argv){
     cout << "Distancia total recorrida: " << distancia_recorrida << endl;
     
     //Salida de la solución a fichero
-    ofstream output_file("data/ulysses16_insercion_1.txt");
+    ofstream output_file("data/output/ulysses16_insercion.txt");
     for(int i=0; i<tam_solucion; ++i){
         int c = solucion[i];
         output_file << c+1 << " " << v_coordenadas[c].first << " " << v_coordenadas[c].second << endl;
     }
+
+    output_file.close();
 
     return (0);
 }

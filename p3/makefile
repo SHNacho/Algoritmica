@@ -6,15 +6,12 @@ CXX = -std=gnu++0x -g -I$(INC)
 
 all: clean build
 
-build: $(BIN)/tsp_insercion_1 $(BIN)/tsp_insercion_2 $(BIN)/tsp_cercania $(BIN)/gasolineras $(BIN)/tsp_aristas
+build: $(BIN)/tsp_insercion $(BIN)/tsp_cercania $(BIN)/gasolineras $(BIN)/tsp_aristas
 
 $(BIN)/tsp_aristas: $(OBJ)/tsp_aristas.o $(OBJ)/matriz.o
 	g++ $(CXX) -no-pie -o $@ $^
 
-$(BIN)/tsp_insercion_2: $(OBJ)/tsp_insercion_2.o $(OBJ)/matriz.o
-	g++ $(CXX) -no-pie -o $@ $^
-	
-$(BIN)/tsp_insercion_1: $(OBJ)/tsp_insercion_1.o $(OBJ)/matriz.o
+$(BIN)/tsp_insercion: $(OBJ)/tsp_insercion.o $(OBJ)/matriz.o
 	g++ $(CXX) -no-pie -o $@ $^
 	
 $(BIN)/tsp_cercania: $(OBJ)/tsp_cercania.o $(OBJ)/matriz.o
@@ -26,10 +23,7 @@ $(BIN)/gasolineras: $(OBJ)/gasolineras.o $(OBJ)/matriz.o
 $(OBJ)/tsp_aristas.o: $(SRC)/tsp_aristas.cpp $(INC)/matriz.h
 	g++ $(CXX) -c $< -o $@
 
-$(OBJ)/tsp_insercion_2.o: $(SRC)/tsp_insercion_2.cpp $(INC)/matriz.h
-	g++ $(CXX) -c $< -o $@
-
-$(OBJ)/tsp_insercion_1.o: $(SRC)/tsp_insercion_1.cpp $(INC)/matriz.h
+$(OBJ)/tsp_insercion.o: $(SRC)/tsp_insercion.cpp $(INC)/matriz.h
 	g++ $(CXX) -c $< -o $@
 	
 $(OBJ)/tsp_cercania.o: $(SRC)/tsp_cercania.cpp $(INC)/matriz.h

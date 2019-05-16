@@ -58,7 +58,6 @@ int main(int argc, char **argv){
 
     //Reservamos espacio para el grafo
     matriz <double> m(dimension, dimension, INF);
-
     //Movemos el offset al comienzo de los datos
     for(int i=0; i<3; ++i){
         getline(input_file, line);
@@ -120,8 +119,6 @@ int main(int argc, char **argv){
       solucion.push_back(menor);
       candidatos[menor] = -1;
       i = menor;
-
-
     }
     
     // Imprimimos el vector solucion teniendo en cuenta que para la implementacion
