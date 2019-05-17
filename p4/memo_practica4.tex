@@ -1,0 +1,137 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Engineering Calculation Paper
+% LaTeX Template
+% Version 1.0 (20/1/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:void fusion(int T[], int inicial, int final, int U[], int V[]){
+% Dmitry Volynkin (dim_voly@yahoo.com.au)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[11pt,a4paper]{article} % Use A4 paper with a 12pt font size - different paper sizes will require manual recalculation of page margins and border positions
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{color}
+\definecolor{gray97}{gray}{.97}
+\definecolor{gray75}{gray}{.75}
+\definecolor{gray45}{gray}{.45}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\lstset{language=C++,
+	frame=Ltb,
+	framerule=0pt,
+	aboveskip=.5cm,
+	framextopmargin=3pt,
+	framexbottommargin=3pt,
+	framexleftmargin=0.2cm,
+	framexrightmargin=0cm,
+	framesep=0pt,
+	rulesep=1.4pt,
+	backgroundcolor=\color{gray97},
+	rulesepcolor=\color{gray45},
+	%
+	stringstyle=\color{red!80!black}\ttfamily,
+	showstringspaces = false,
+	basicstyle=\ttfamily,
+	commentstyle=\color{green!50!black}\ttfamily,
+	keywordstyle=\color{blue}\ttfamily,
+	morecomment=[l][\color{magenta}]{\#},
+	%
+	numbers=left,
+	numbersep=10pt,
+	numberstyle=\tiny,
+	numberfirstline = false,
+	breaklines=true,
+	postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}},
+	xleftmargin=0.7cm,
+	xrightmargin=0.3cm,
+	tabsize=4,
+}
+
+% minimizar fragmentado de listados
+\lstnewenvironment{listing}[1][]
+{\lstset{#1}\pagebreak[0]}{\pagebreak[0]}
+
+\lstdefinestyle{consola}
+{basicstyle=\scriptsize\bf\ttfamily,
+	backgroundcolor=\color{gray75},
+}
+
+\lstdefinestyle{C++}
+{language=C++,
+}
+
+
+\usepackage{marginnote} % Required for margin notes
+\usepackage{wallpaper} % Required to set each page to have a background
+\usepackage{lastpage} % Required to print the total number of pages
+\usepackage[left=1.3cm,right=4.6cm,top=2cm,bottom=4.0cm,marginparwidth=3.4cm]{geometry} % Adjust page margins
+\usepackage{amsmath} % Required for equation customization
+\usepackage{amssymb} % Required to include mathematical symbols
+\usepackage{xcolor} % Required to specify colors by name
+\usepackage{fancyhdr} % Required to customize headers
+\setlength{\headheight}{80pt} % Increase the size of the header to accommodate meta-information
+\pagestyle{fancy}\fancyhf{} % Use the custom header specified below
+\renewcommand{\headrulewidth}{0pt} % Remove the default horizontal rule under the header
+
+\setlength{\parindent}{0cm} % Remove paragraph indentation
+\newcommand{\tab}{\hspace*{2em}} % Defines a new command for some horizontal space
+
+\newcommand\BackgroundStructure{ % Command to specify the background of each page
+\setlength{\unitlength}{1mm} % Set the unit length to millimeters
+
+\setlength\fboxsep{0mm} % Adjusts the distance between the frameboxes and the borderlines
+\setlength\fboxrule{0.5mm} % Increase the thickness of the border line
+\put(10, 10){\fcolorbox{black}{blue!10}{\framebox(155,247){}}} % Main content box
+\put(165, 10){\fcolorbox{black}{blue!10}{\framebox(37,247){}}} % Margin box
+\put(10, 261){\fcolorbox{black}{white!10}{\framebox(192, 27){}}} % Header box
+\put(145, 270){\includegraphics[height=15mm,keepaspectratio]{../logo.png}} % Logo box - maximum height/width: 
+}
+
+%----------------------------------------------------------------------------------------
+%	HEADER INFORMATION
+%----------------------------------------------------------------------------------------
+
+\fancyhead[L]{\begin{tabular}{l r | l r} % The header is a table with 4 columns
+		\textbf{ALGORÍTMICA} &  & \textbf{Adrián Carmona Lupiáñez} \\ % Project name and page count
+		\textbf{Práctica} & 3 & \textbf{Ignacio Sánchez Herrera}  \\ % Version and reviewed date
+		&  & \textbf{Jacobo Casado de Gracia} \\
+		\textbf{Página} & \thepage/\pageref{LastPage} & \textbf{Jesús José Mª Maldonado Arroyo} \\
+		& & \textbf{Juan Miguel Hernández Gómez} \\
+\end{tabular}}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\AddToShipoutPicture{\BackgroundStructure} % Set the background of each page to that specified above in the header information section
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT CONTENT
+%----------------------------------------------------------------------------------------
+
+
+
+
+\section{Título 1}
+
+
+
+
+%----------------------------------------------------------------------------------------
+
+%\marginnote{\textbf{NOTA}: Algoritmo al que calcular la eficiencia.}
+
+\end{document}
