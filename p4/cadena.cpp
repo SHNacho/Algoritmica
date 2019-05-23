@@ -11,6 +11,7 @@ string subsecuencia(string a, string b){
 	int b_tam= b.size();
 	string subsecuencia="";
 	
+	//Creacion de la matriz con los valores y la matriz con las direcciones
 	vector <vector <int>> matriz(a_tam+1, vector <int> (b_tam+1, 0));
 	vector <vector <int>> matrizpadres(a_tam+1, vector <int> (b_tam+1, 0));
 	
@@ -33,7 +34,7 @@ string subsecuencia(string a, string b){
 		}
 	}
 	
-	//Matriz con los valores
+	//Impresion de la matriz con los valores
 	cout << "    ";
 	
 	for (int i=0; i<b_tam; i++)
@@ -52,7 +53,7 @@ string subsecuencia(string a, string b){
 		cout << endl;
 	}
 	
-	//Matriz con las flechas
+	//Impresion de la matriz con las direcciones
 	cout << endl;
 	cout << endl;
 	cout << "    ";
