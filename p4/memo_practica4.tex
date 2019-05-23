@@ -125,9 +125,301 @@
 
 
 
-\section{Título 1}
+\section{Subsecuencia más larga}
+
+\subsection{Pseudocódigo}
+Sean S1 y S2 las secuencias de las cuales queremos hallar la subsecuencia común más larga, el algoritmo se describiría por el siguiente pseudocódigo.
+
+\begin{lstlisting}
+INICIO DEL ALGORITMO
+    cadena reconstruccion(matriz M, cadena S1, cadena S2, entero i, entero j)
+    INICIO DE LA FUNCION
+        Si i o j son 0:
+            Devolver {}
+        Si no, si S1[i-1] es igual a S2[j-1]:
+            Devolver reconstruccion(M, S1, S2, i-1, j-1)
+        Si no, si M[i-1][j] es mayor que M[i][j-1]:
+            Devolver reconstruccion(M, S1, S2, i-1, j)
+        Si no:
+            Devolver reconstruccion(M, S1, S2, i, j-1)
+    FIN DE LA FUNCION
+    
+    TAM1=|S1|
+    TAM2=|S2|
+    Crear una matriz M con TAM1 filas y TAM2 columnas
+    Rellenar la primera fila y la primera columna de M con ceros
+    Repetir desde i=1 hasta TAM1:
+        Repetir desde j=1 hasta TAM2:
+            Si S1[i-1] es igual a S2[j-1]:
+                M[i][j]=M[i-1][j-1]+1
+            Si no:
+                M[i][j]=max(M[i-1][j],M[i][j-1])
+    Devolver reconstruccion(M, S1, S2, TAM1, TAM2)
+FIN DEL ALGORITMO
+
+\end{lstlisting}
 
 
+\newpage
+\subsection{Eficiencia y ecuación recursiva}
+
+
+
+\newpage
+\subsection{Código}
+Aquí se muestra el código utilizado escrito en lenguaje C++.
+
+\begin{lstlisting}[style=C++]
+//Funcion de reconstruccion recursiva
+string reconstruccion(vector <vector <int>> matriz, string a, string b, int i, int j){
+	if (i==0 || j==0)
+		return "";
+	else if (a[i-1] == b[j-1])
+		return reconstruccion (matriz, a, b, i-1, j-1) + a[i-1];
+	else if (matriz[i-1][j]>matriz[i][j-1])
+		return reconstruccion (matriz, a, b, i-1, j);
+	else
+		return reconstruccion (matriz, a, b, i, j-1);
+}
+
+
+//Funcion para hallar la subsecuencia mas corta con programacion dinamica
+string subsecuencia(string a, string b){
+	int a_tam= a.size();
+	int b_tam= b.size();
+	
+	//Creacion de la matriz con los valores y la matriz con las direcciones
+	vector <vector <int>> matriz(a_tam+1, vector <int> (b_tam+1, 0));
+	
+	for (int i=1; i<a_tam+1; i++){
+		for (int j=1; j<b_tam+1; j++){
+			if (a[i-1]==b[j-1])
+				matriz[i][j]= matriz[i-1][j-1]+1;
+			else{
+				if (matriz[i-1][j]>matriz[i][j-1])
+					matriz[i][j]= matriz[i-1][j];
+				else
+					matriz[i][j]= matriz[i][j-1];
+			}
+		}
+	}	
+	
+	//Return
+	return reconstruccion(matriz, a, b, a_tam, b_tam);
+}
+\end{lstlisting}
+
+\newpage
+\subsection{Escenarios de ejecución}
+Utilizando las secuencias \textit{jacobocasadodegracia} y \textit{jesusjosemariamaldonadoarroyo}, la subsecuencia común más larga es \textit{josadoaa}.\\
+
+Aquí podemos ver la matriz de números que se construye.\\
+
+\small
+
+\hspace{1,72 em} \texttt{j e s u s j o s e m a r i a m a l d o n a d o a r r o y o}
+
+\hspace{0,71 em} \texttt{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}
+
+\texttt{j 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}
+
+\texttt{a 0 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2}
+
+\texttt{c 0 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2}
+
+\texttt{o 0 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3 3 3 3}
+
+\texttt{b 0 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3 3 3 3}
+
+\texttt{o 0 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 3 3 3 3 4 4 4 4 4 4 4}
+
+\texttt{c 0 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 3 3 3 3 4 4 4 4 4 4 4}
+
+\texttt{a 0 1 1 1 1 1 1 2 2 2 2 3 3 3 3 3 3 3 3 3 3 4 4 4 5 5 5 5 5 5}
+
+\texttt{s 0 1 1 2 2 2 2 2 3 3 3 3 3 3 3 3 3 3 3 3 3 4 4 4 5 5 5 5 5 5}
+
+\texttt{a 0 1 1 2 2 2 2 2 3 3 3 4 4 4 4 4 4 4 4 4 4 4 4 4 5 5 5 5 5 5}
+
+\texttt{d 0 1 1 2 2 2 2 2 3 3 3 4 4 4 4 4 4 4 5 5 5 5 5 5 5 5 5 5 5 5}
+
+\texttt{o 0 1 1 2 2 2 2 3 3 3 3 4 4 4 4 4 4 4 5 6 6 6 6 6 6 6 6 6 6 6}
+
+\texttt{d 0 1 1 2 2 2 2 3 3 3 3 4 4 4 4 4 4 4 5 6 6 6 7 7 7 7 7 7 7 7}
+
+\texttt{e 0 1 2 2 2 2 2 3 3 4 4 4 4 4 4 4 4 4 5 6 6 6 7 7 7 7 7 7 7 7}
+
+\texttt{g 0 1 2 2 2 2 2 3 3 4 4 4 4 4 4 4 4 4 5 6 6 6 7 7 7 7 7 7 7 7}
+
+\texttt{r 0 1 2 2 2 2 2 3 3 4 4 4 5 5 5 5 5 5 5 6 6 6 7 7 7 8 8 8 8 8}
+
+\texttt{a 0 1 2 2 2 2 2 3 3 4 4 5 5 5 6 6 6 6 6 6 6 7 7 7 8 8 8 8 8 8}
+
+\texttt{c 0 1 2 2 2 2 2 3 3 4 4 5 5 5 6 6 6 6 6 6 6 7 7 7 8 8 8 8 8 8}
+
+\texttt{i 0 1 2 2 2 2 2 3 3 4 4 5 5 6 6 6 6 6 6 6 6 7 7 7 8 8 8 8 8 8}
+
+\texttt{a 0 1 2 2 2 2 2 3 3 4 4 5 5 6 7 7 7 7 7 7 7 7 7 7 8 8 8 8 8 8} \\
+
+\normalsize
+
+Y aquí podemos ver la matriz de direcciones que se construye.\\
+
+\small
+
+\hspace{1,72 em} \texttt{j e s u s j o s e m a r i a m a l d o n a d o a r r o y o}
+
+\hspace{0,71 em} \texttt{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}
+
+\texttt{j 0 \textbackslash{ }- - - - \textbackslash{ }- - - - - - - - - - - - - - - - - - - - - - -}
+
+\texttt{a 0 | - - - - - - - - - \textbackslash{ }- - \textbackslash{ }- \textbackslash{ }- - - - \textbackslash{ }- - \textbackslash{ }- - - - -}
+
+\texttt{c 0 | - - - - - - - - - | - - - - - - - - - - - - - - - - - -}
+
+\texttt{o 0 | - - - - - \textbackslash{ }- - - - - - - - - - - \textbackslash{ }- - - \textbackslash{ }- - - \textbackslash{ }- \textbackslash}
+
+\texttt{b 0 | - - - - - | - - - - - - - - - - - | - - - - - - - - - -}
+
+\texttt{o 0 | - - - - - \textbackslash{ }- - - - - - - - - - - \textbackslash{ }- - - \textbackslash{ }- - - \textbackslash{ }- \textbackslash}
+
+\texttt{c 0 | - - - - - | - - - - - - - - - - - | - - - | - - - - - -}
+
+\texttt{a 0 | - - - - - | - - - \textbackslash{ }- - \textbackslash{ }- \textbackslash{ }- - - - \textbackslash{ }- - \textbackslash{ }- - - - -}
+
+\texttt{s 0 | - \textbackslash{ }- \textbackslash{ }- - \textbackslash{ }- - - - - - - - - - - - | - - | - - - - -}
+
+\texttt{a 0 | - | - - - - | - - \textbackslash{ }- - \textbackslash{ }- \textbackslash{ }- - - - \textbackslash{ }- - \textbackslash{ }- - - - -}
+
+\texttt{d 0 | - | - - - - | - - | - - - - - - \textbackslash{ }- - - \textbackslash{ }- - - - - - -}
+
+\texttt{o 0 | - | - - - \textbackslash{ }- - - | - - - - - - | \textbackslash{ }- - - \textbackslash{ }- - - \textbackslash{ }- \textbackslash}
+
+\texttt{d 0 | - | - - - | - - - | - - - - - - \textbackslash{ }| - - \textbackslash{ }- - - - - - -}
+
+\texttt{e 0 | \textbackslash{ }- - - - | - \textbackslash{ }- - - - - - - - | | - - | - - - - - - -}
+
+\texttt{g 0 | | - - - - | - | - - - - - - - - | | - - | - - - - - - -}
+
+\texttt{r 0 | | - - - - | - | - - \textbackslash{ }- - - - - - | - - | - - \textbackslash{ }\textbackslash{ }- - -}
+
+\texttt{a 0 | | - - - - | - | - \textbackslash{ }- - \textbackslash{ }- \textbackslash{ }- - - - \textbackslash{ }- - \textbackslash{ }- - - - -}
+
+\texttt{c 0 | | - - - - | - | - | - - | - - - - - - | - - | - - - - -}
+
+\texttt{i 0 | | - - - - | - | - | - \textbackslash{ }- - - - - - - | - - | - - - - -}
+
+\texttt{a 0 | | - - - - | - | - \textbackslash{ }- | \textbackslash{ }- \textbackslash{ }- - - - \textbackslash{ }- - \textbackslash{ }- - - - -}
+
+\normalsize
+
+
+Vamos a observar otro ejemplo utilizando las secuencias de caracteres \textit{ignaciosanchezherrera} y \textit{juanmiguelhernandezgomez, cuya subsecuencia común más larga es \textit{ignaneze}}.\\
+
+\small
+
+\hspace{1,72 em} \texttt{j u a n m i g u e l h e r n a n d e z g o m e z}
+
+\hspace{0,71 em} \texttt{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}
+
+\texttt{i 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}
+
+\texttt{g 0 0 0 0 0 0 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2}
+
+\texttt{n 0 0 0 0 1 1 1 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3 3 3 3}
+
+\texttt{a 0 0 0 1 1 1 1 2 2 2 2 2 2 2 3 4 4 4 4 4 4 4 4 4 4}
+
+\texttt{c 0 0 0 1 1 1 1 2 2 2 2 2 2 2 3 4 4 4 4 4 4 4 4 4 4}
+
+\texttt{i 0 0 0 1 1 1 2 2 2 2 2 2 2 2 3 4 4 4 4 4 4 4 4 4 4}
+
+\texttt{o 0 0 0 1 1 1 2 2 2 2 2 2 2 2 3 4 4 4 4 4 4 5 5 5 5}
+
+\texttt{s 0 0 0 1 1 1 2 2 2 2 2 2 2 2 3 4 4 4 4 4 4 5 5 5 5}
+
+\texttt{a 0 0 0 1 1 1 2 2 2 2 2 2 2 2 3 4 4 4 4 4 4 5 5 5 5}
+
+\texttt{n 0 0 0 1 2 2 2 2 2 2 2 2 2 2 3 4 5 5 5 5 5 5 5 5 5}
+
+\texttt{c 0 0 0 1 2 2 2 2 2 2 2 2 2 2 3 4 5 5 5 5 5 5 5 5 5}
+
+\texttt{h 0 0 0 1 2 2 2 2 2 2 2 3 3 3 3 4 5 5 5 5 5 5 5 5 5}
+
+\texttt{e 0 0 0 1 2 2 2 2 2 3 3 3 4 4 4 4 5 5 6 6 6 6 6 6 6}
+
+\texttt{z 0 0 0 1 2 2 2 2 2 3 3 3 4 4 4 4 5 5 6 7 7 7 7 7 7}
+
+\texttt{h 0 0 0 1 2 2 2 2 2 3 3 4 4 4 4 4 5 5 6 7 7 7 7 7 7}
+
+\texttt{e 0 0 0 1 2 2 2 2 2 3 3 4 5 5 5 5 5 5 6 7 7 7 7 8 8}
+
+\texttt{r 0 0 0 1 2 2 2 2 2 3 3 4 5 6 6 6 6 6 6 7 7 7 7 8 8}
+
+\texttt{r 0 0 0 1 2 2 2 2 2 3 3 4 5 6 6 6 6 6 6 7 7 7 7 8 8}
+
+\texttt{e 0 0 0 1 2 2 2 2 2 3 3 4 5 6 6 6 6 6 7 7 7 7 7 8 8}
+
+\texttt{r 0 0 0 1 2 2 2 2 2 3 3 4 5 6 6 6 6 6 7 7 7 7 7 8 8}
+
+\texttt{a 0 0 0 1 2 2 2 2 2 3 3 4 5 6 6 7 7 7 7 7 7 7 7 8 8}\\
+
+\normalsize
+
+
+Y aquí podemos ver la matriz de direcciones que se construye.\\
+
+\small
+
+\hspace{1,72 em} \texttt{j u a n m i g u e l h e r n a n d e z g o m e z}
+
+\hspace{0,71 em} \texttt{0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}
+
+\texttt{i 0 - - - - - \textbackslash{ }- - - - - - - - - - - - - - - - - -}
+
+\texttt{g 0 - - - - - | \textbackslash{ }- - - - - - - - - - - - \textbackslash{ }- - - -}
+
+\texttt{n 0 - - - \textbackslash{ }- - | - - - - - - \textbackslash{ }- \textbackslash{ }- - - - - - - -}
+
+\texttt{a 0 - - \textbackslash{ }- - - | - - - - - - | \textbackslash{ }- - - - - - - - -}
+
+\texttt{c 0 - - | - - - | - - - - - - | | - - - - - - - - -}
+
+\texttt{i 0 - - | - - \textbackslash{ }- - - - - - - | | - - - - - - - - -}
+
+\texttt{o 0 - - | - - | - - - - - - - | | - - - - - \textbackslash{ }- - -}
+
+\texttt{s 0 - - | - - | - - - - - - - | | - - - - - | - - -}
+
+\texttt{a 0 - - \textbackslash{ }- - | - - - - - - - | \textbackslash{ }- - - - - | - - -}
+
+\texttt{n 0 - - | \textbackslash{ }- - - - - - - - - \textbackslash{ }| \textbackslash{ }- - - - - - - -}
+
+\texttt{c 0 - - | | - - - - - - - - - | | | - - - - - - - -}
+
+\texttt{h 0 - - | | - - - - - - \textbackslash{ }- - - | | - - - - - - - -}
+
+\texttt{e 0 - - | | - - - - \textbackslash{ }- - \textbackslash{ }- - - | - \textbackslash{ }- - - - \textbackslash{ }-} 
+
+\texttt{z 0 - - | | - - - - | - - | - - - | - | \textbackslash{ }- - - - \textbackslash{ }}
+
+\texttt{h 0 - - | | - - - - | - \textbackslash{ }- - - - | - | | - - - - -}
+
+\texttt{e 0 - - | | - - - - \textbackslash{ }- | \textbackslash{ }- - - - - \textbackslash{ }| - - - \textbackslash{ }-}
+
+\texttt{r 0 - - | | - - - - | - | | \textbackslash{ }- - - - - | - - - | -}
+
+\texttt{r 0 - - | | - - - - | - | | \textbackslash{ }- - - - - | - - - | -}
+
+\texttt{e 0 - - | | - - - - \textbackslash{ }- | \textbackslash{ }| - - - - \textbackslash{ }- - - - \textbackslash{ }-}
+
+\texttt{r 0 - - | | - - - - | - | | \textbackslash{ }- - - - | - - - - | -}
+
+\texttt{a 0 - - \textbackslash{ }| - - - - | - | | | - \textbackslash{ }- - - - - - - | -}
+
+
+
+\normalsize
 
 
 %----------------------------------------------------------------------------------------
