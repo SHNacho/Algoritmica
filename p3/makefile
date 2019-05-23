@@ -41,4 +41,4 @@ clean:
 	rm -rf $(BIN)/* $(OBJ)/* $(DAT)/output/* practica3.zip 
 	
 zip: clean
-	zip -r practica3.zip bin include makefile obj src data memo_practica3.pdf
+	zip -r practica3.zip bin include README.md makefile obj src data memo_practica3.pdf

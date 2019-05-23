@@ -1,6 +1,6 @@
 #!/usr/bin/gnuplot -c
 
-set xrange [0:300]
-set yrange [0:300]
-set xtics 50
-set ytics 50
+set xrange [33:66]
+set yrange [-6:27]
+set xtics 1
+set ytics 1
