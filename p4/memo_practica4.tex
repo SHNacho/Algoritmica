@@ -151,7 +151,15 @@ Si $x_i$ es un elemento intermedio de la subsecuencia más larga, entonces la su
 
 \textbf{Planteamiento de una recurrencia}
 
-[AÑADIR TEXTO]\\
+Sean $X_n, Y_m$ las dos secuencias de tamaños $n,m$ y $X_{n-1}, Y_{m-1}$ las subsecuencias de tamaño $n-1$ y $m-1$ entonces llamemos $f(X_n, Y_m)$ al tamaño de la subsecuencia común más larga de $X_n$ y $Y_m$, donde:
+$$
+f(X_n, Y_m)= \left\{ \begin{array}{lcc}
+	0 &   si  & n = 0, m = 0\\
+	\\ 1 + f(X_{n-1}, Y_{m-1}) &  si & X = Y \\
+	\\ max(f(X_{n}, Y_{m-1}), f(X_{n-1}, Y_{m})) &  si  & X \neq Y
+	\end{array}
+\right.
+$$
 
 \textbf{Cálculo de una solución}
 
