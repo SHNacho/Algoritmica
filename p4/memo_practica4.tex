@@ -151,20 +151,31 @@ Si $x_i$ es un elemento intermedio de la subsecuencia más larga, entonces la su
 
 \textbf{Planteamiento de una recurrencia}
 
-Sean $X_n, Y_m$ las dos secuencias de tamaños $n,m$ y $X_{n-1}, Y_{m-1}$ las subsecuencias de tamaño $n-1$ y $m-1$ entonces llamemos $f(X_n, Y_m)$ al tamaño de la subsecuencia común más larga de $X_n$ y $Y_m$, donde:
+Sean $X_n$ la secuencia $x_1, x_2, \dots , x_n$ y $Y_m$ la secuencia $y_1, y_2, \dots , y_m$. Entonces llamemos $f(X_n, Y_m)$ al tamaño de la subsecuencia común más larga de $X_n$ y $Y_m$, donde:
 $$
 f(X_n, Y_m)= \left\{ \begin{array}{lcc}
 	0 &   si  & n = 0, m = 0\\
-	\\ 1 + f(X_{n-1}, Y_{m-1}) &  si & X = Y \\
-	\\ max(f(X_{n}, Y_{m-1}), f(X_{n-1}, Y_{m})) &  si  & X \neq Y
+	\\ 1 + f(X_{n-1}, Y_{m-1}) &  si & x_n = y_m \\
+	\\ max(f(X_{n}, Y_{m-1}), f(X_{n-1}, Y_{m})) &  si  & x_n \neq y_m
 	\end{array}
 \right.
 $$
-
+\\
 \textbf{Cálculo de una solución}
 
-[AÑADIR TEXTO]\\
+Para el cálculo de una solución crearemos una matriz en la que almacenaremos todos los valores posibles, evitando así operaciones repetidas, que en el caso de la recurrencia se repetirían.
+Una vez obtenida la matriz, la reconstrucción de la subsecuencia común más larga es sencilla.
 
+Sea $m$ la matriz en la que se almacenarán los datos, en la que, la fila $i$ representa el valor $x_i$ y la columna $j$ el valor $y_j$:
+$$
+m(i, j)= \left\{ \begin{array}{lcc}
+	0 &   si  & i = 0, j = 0\\
+	\\ 1 + m(i-1, j-1) &  si & x_i = y_j \\
+	\\ max(m(i-1,j), m(i,j-1)) &  si  & x_i \neq y_j
+	\end{array}
+\right.
+$$
+\\
 
 \newpage
 \section{Pseudocódigo}
