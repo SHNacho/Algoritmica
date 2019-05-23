@@ -123,10 +123,12 @@
 %----------------------------------------------------------------------------------------
 
 
-\title{\Huge \textbf{Subsecuencia más larga}}
+\title{\Huge \textbf{Subsecuencia en común más larga}}
 \date{}
 \maketitle
 \thispagestyle{fancy}
+
+\vspace{-2cm}
 
 \section{Planteamiento del problema}
 La Programación Dinámica se aplica en cuatro fases:
@@ -165,22 +167,22 @@ Sean S1 y S2 las secuencias de las cuales queremos hallar la subsecuencia común
 \normalsize 	
 \begin{lstlisting}
 INICIO DEL ALGORITMO
-    cadena reconstruccion(matriz M, cadena S1, cadena S2, entero i, entero j)
+    cadena reconstruccion(matriz M, cadena a, cadena b, entero i, entero j)
     INICIO DE LA FUNCION
         Si i o j son 0:
             Devolver {}
-        Si no, si S1[i-1] es igual a S2[j-1]:
-            Devolver reconstruccion(M, S1, S2, i-1, j-1)
+        Si no, si a[i-1] es igual a b[j-1]:
+            Devolver reconstruccion(M, a, b, i-1, j-1)
         Si no, si M[i-1][j] es mayor que M[i][j-1]:
-            Devolver reconstruccion(M, S1, S2, i-1, j)
+            Devolver reconstruccion(M, a, b, i-1, j)
         Si no:
-            Devolver reconstruccion(M, S1, S2, i, j-1)
+            Devolver reconstruccion(M, a, b, i, j-1)
     FIN DE LA FUNCION
     
     TAM1=|S1|
     TAM2=|S2|
     Crear una matriz M con TAM1 filas y TAM2 columnas
-    Rellenar la primera fila y la primera columna de M con ceros
+    Rellenar la primera fila y columna de M con ceros
     Repetir desde i=1 hasta TAM1:
         Repetir desde j=1 hasta TAM2:
             Si S1[i-1] es igual a S2[j-1]:
