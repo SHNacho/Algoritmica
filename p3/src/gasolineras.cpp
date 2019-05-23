@@ -22,8 +22,7 @@ double Distancia(const pair<double,double> & posicion_A,
 }
 
 //TODO
-int BuscarGasolinera(const int autonomia,const int pos_actual, const int ciudad_destino,
-  matriz<double> & grafo,  vector<int> &candidatos){
+int BuscarGasolinera(const int autonomia,const int pos_actual, const int ciudad_destino, matriz<double> & grafo,  vector<int> &candidatos){
 
   int parada = -1;
   vector<int> indices_posibles_gasolineras;
