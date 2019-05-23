@@ -123,11 +123,41 @@
 %----------------------------------------------------------------------------------------
 
 
+\title{\Huge \textbf{Subsecuencia más larga}}
+\date{}
+\maketitle
+\thispagestyle{fancy}
+
+\section{Planteamiento del problema}
+La Programación Dinámica se aplica en cuatro fases:
+\begin{enumerate}
+	\item Identificar la naturaleza n-etápica del problema
+	\item Verificación del Principio de Optimalidad de Bellman
+	\item Planteamiento de una recurrencia
+	\item Cálculo de una solución.
+\end{enumerate}
+
+\textbf{Naturaleza n-etápica del problema}
+
+Sea la subsecuencia más larga $x_1, x_2, ..., x_n$; esta subsecuencia es resultado de una serie de sucesiones ya que tenemos que decidir los valores de $x_i$, con $1 \le i \le n$. Así primero tomaríamos una decisión sobre $x_1$, luego sobre $x_2$, y así sucesivamente.
+
+Por lo que podemos ver que estamos ante un problema de decisión n-etápico.\\
+
+\textbf{Principio de Optimalidad de Bellman}
+
+Si $x_i$ es un elemento intermedio de la subsecuencia más larga, entonces la subsecuencia $x_1, x_2, ..., x_i$ es una solución optimal, y también lo es la subsecuencia $x_i, x_{i+1}, ..., x_n$. \\
+
+\textbf{Planteamiento de una recurrencia}
+
+[AÑADIR TEXTO]\\
+
+\textbf{Cálculo de una solución}
+
+[AÑADIR TEXTO]\\
 
 
-\section{Subsecuencia más larga}
-
-\subsection{Pseudocódigo}
+\newpage
+\section{Pseudocódigo}
 Sean S1 y S2 las secuencias de las cuales queremos hallar la subsecuencia común más larga, el algoritmo se describiría por el siguiente pseudocódigo.
 
 \begin{lstlisting}
@@ -161,12 +191,12 @@ FIN DEL ALGORITMO
 
 
 \newpage
-\subsection{Eficiencia y ecuación recursiva}
+\section{Eficiencia y ecuación recursiva}
 
 
 
 \newpage
-\subsection{Código}
+\section{Código}
 Aquí se muestra el código utilizado escrito en lenguaje C++.
 
 \begin{lstlisting}[style=C++]
@@ -210,7 +240,7 @@ string subsecuencia(string a, string b){
 \end{lstlisting}
 
 \newpage
-\subsection{Escenarios de ejecución}
+\section{Escenarios de ejecución}
 Utilizando las secuencias \textit{jacobocasadodegracia} y \textit{jesusjosemariamaldonadoarroyo}, la subsecuencia común más larga es \textit{josadoaa}.\\
 
 Aquí podemos ver la matriz de números que se construye.\\
