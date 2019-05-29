@@ -164,7 +164,7 @@ $$
 \textbf{Cálculo de una solución}
 
 Para el cálculo de una solución crearemos una matriz en la que almacenaremos todos los valores posibles, evitando así operaciones repetidas, que en el caso de la recurrencia se repetirían.
-Una vez obtenida la matriz, la reconstrucción de la subsecuencia común más larga es sencilla.
+Una vez obtenida la matriz, la reconstrucción de la subsecuencia común más larga es sencilla a partir de la recurrencia planteada.
 
 Sea $m$ la matriz en la que se almacenarán los datos, en la que, la fila $i$ representa el valor $x_i$ y la columna $j$ el valor $y_j$:
 $$
@@ -191,7 +191,7 @@ INICIO DEL ALGORITMO
         Si i o j son 0:
             Devolver {}
         Si no, si a[i-1] es igual a b[j-1]:
-            Devolver reconstruccion(M, a, b, i-1, j-1)
+            Devolver reconstruccion(M, a, b, i-1, j-1) + a[i-1]
         Si no, si M[i-1][j] es mayor que M[i][j-1]:
             Devolver reconstruccion(M, a, b, i-1, j)
         Si no:
@@ -215,12 +215,17 @@ FIN DEL ALGORITMO
 
 
 \newpage
-\section{Eficiencia y ecuación recursiva}
+\section{Eficiencia}
 En cuanto a la eficiencia teórica del problema, tenemos dos cadenas de caracteres, una de tamaño $m$ y otra de tamaño $n$ (no tienen por qué ser iguales, como hemos visto a lo largo de toda la memoria).\\
+Como vemos en el pseudocódigo primero se crea una matriz de tamaño $m \cdot n$, por lo que esta parte del algoritmo es de orden $O(n \cdot m)$.
 
-Por tanto, el tamaño del problema a resolver es de $n*m$; de hecho, esto se ve a simple vista cuando almacenamos las dos cadenas de caracteres en una matriz, y operamos dentro de ella, obteniendo la solución en esa misma matriz.\\
+Por otra parte la función de reconstrucción es una función recursiva. Sin embargo, como podemos ver, la reconstrucción se apoya en los valores de la matriz. Esto hace que la reconstrucción sea directa, por lo que esta parte del algoritmo es de orden $O(n)$.
 
-La eficiencia teórica, por tanto, es $O(n*m)$.
+Por lo tanto, podemos concluir que el algoritmo es de orden $O(n \cdot m)$.
+
+\vspace{5mm}
+
+En el caso de que esta matriz no existiese, estariamos hablando de un algoritmo de orden $O(2^n)$, ya que la función recursiva debería realizar todas las operaciones posibles, repitiendo muchas de ellas. Por lo tanto, la programación dinámica supone una gran mejora.
 
 
 
@@ -242,7 +247,6 @@ string reconstruccion(vector <vector <int>> matriz, string a, string b, int i, i
 	else
 		return reconstruccion (matriz, a, b, i, j-1);
 }
-
 
 //Funcion para hallar la subsecuencia mas corta con programacion dinamica
 string subsecuencia(string a, string b){
