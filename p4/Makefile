@@ -1,8 +1,8 @@
 build:
-	gcc cadena.cpp -o cadena
+	gcc sml.cpp -o sml
 
 clean:
-	rm -rf cadena
+	rm -rf sml
 
-zip:
-	zip -r practica_4.zip cadena.cpp Makefile memo_practica4.pdf
+zip: clean
+	zip -r practica_4.zip sml.cpp Makefile memo_practica4.pdf
